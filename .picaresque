@@ -25,5 +25,8 @@
   },
   "TF_VAR_ROLLBAR_SERVER": {
     "description": "Rollbar server token"
+  },
+  "TF_VAR_SLACK_SECRET": {
+    "description": "Slack Secret"
   }
 }
