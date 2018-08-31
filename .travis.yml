@@ -5,6 +5,10 @@ cache: yarn
 install:
 - npm install --global --upgrade yarn
 - yarn install
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+- unzip terraform_0.11.7_linux_amd64.zip
+- rm terraform_0.11.7_linux_amd64.zip
 - yarn picaresque
 jobs:
   include:
@@ -13,14 +17,16 @@ jobs:
     script:
     - yarn outdated
     - yarn foia-db
+    - chmod +x ./cc-test-reporter
+    - ./cc-test-reporter before-build
+    - yarn nyc mocha
+    - yarn nyc report
+    - ./cc-test-reporter after-build
     - yarn gulp build
   - stage: Deploy
     if: ( type = push ) AND ( branch = master )
     script:
     - yarn gulp build
-    - wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
-    - unzip terraform_0.11.7_linux_amd64.zip
-    - rm terraform_0.11.7_linux_amd64.zip
     - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
     - ./terraform apply -auto-approve
   - stage: Actualize
