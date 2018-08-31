@@ -32,8 +32,8 @@ app.use(
 );
 
 export function handler(
-  event: object,
-  context: object,
+  event: any,
+  context: any,
 ): void {
   lambda.proxy(
     lambda.createServer(
