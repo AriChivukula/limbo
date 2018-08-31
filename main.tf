@@ -188,7 +188,7 @@ resource "aws_iam_role_policy_attachment" "IAM_VPC" {
 }
 
 resource "aws_lambda_function" "LAMBDA" {
-  function_name = "${var.NAME}-${var.BRANCH}"
+  function_name = "${var.NAME}"
   handler = "index.handler"
   role = "${aws_iam_role.IAM.arn}"
   runtime = "nodejs8.10"
@@ -206,7 +206,7 @@ resource "aws_lambda_function" "LAMBDA" {
   }
   
   vpc_config {
-    subnet_ids = ["${aws_subnet_ids.PRIVATE_SUBNETS.ids}"]
+    subnet_ids = ["${aws_subnet.PRIVATE_SUBNETS.*.id}"]
     security_group_ids = ["${aws_security_group.SECURITY.id}"]
   }
 
@@ -216,7 +216,7 @@ resource "aws_lambda_function" "LAMBDA" {
 }
 
 resource "aws_api_gateway_rest_api" "API" {
-  name = "${var.NAME}-${var.BRANCH}"
+  name = "${var.NAME}"
 }
 
 resource "aws_api_gateway_resource" "API_GATEWAY" {
@@ -263,7 +263,7 @@ resource "aws_api_gateway_deployment" "API_DEPLOYMENT" {
 }
 
 resource "aws_api_gateway_domain_name" "API_DOMAIN" {
-  domain_name = "dynamic-${var.BRANCH}.${var.DOMAIN}"
+  domain_name = "${var.DOMAIN}"
 
   certificate_arn = "${aws_acm_certificate.CERTIFICATE.arn}"
 }
@@ -277,19 +277,19 @@ resource "aws_api_gateway_base_path_mapping" "API_MAP" {
 resource "aws_lambda_permission" "LAMBDA_PERMISSION" {
   statement_id = "AllowAPIGatewayInvoke"
   action = "lambda:InvokeFunction"
-  function_name = "${var.NAME}-${var.BRANCH}"
+  function_name = "${var.NAME}"
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_deployment.API_DEPLOYMENT.execution_arn}/*/*"
 }
 
 resource "aws_route53_record" "API_RECORD" {
-  name = "dynamic-${var.BRANCH}.${var.DOMAIN}."
+  name = "${var.DOMAIN}."
   type = "A"
   zone_id = "${aws_route53_zone.ZONE.zone_id}"
 
   alias {
     evaluate_target_health = false
-    name = "${aws_api_gateway_domain_name.API_GATEWAY.cloudfront_domain_name}"
-    zone_id = "${aws_api_gateway_domain_name.API_GATEWAY.cloudfront_zone_id}"
+    name = "${aws_api_gateway_domain_name.API_DOMAIN.cloudfront_domain_name}"
+    zone_id = "${aws_api_gateway_domain_name.API_DOMAIN.cloudfront_zone_id}"
   }
 }
