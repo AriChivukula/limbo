@@ -186,3 +186,115 @@ resource "aws_iam_role_policy_attachment" "IAM_VPC" {
   role = "${aws_iam_role.IAM.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
+
+resource "aws_lambda_function" "LAMBDA" {
+  function_name = "${var.NAME}-${var.BRANCH}"
+  handler = "index.handler"
+  role = "${aws_iam_role.IAM.arn}"
+  runtime = "nodejs8.10"
+  memory_size = 256
+  timeout = 300
+  filename = "dynamic.zip"
+  publish = true
+  source_code_hash = "${base64sha256(file("dynamic.zip"))}"
+
+  environment {
+    variables = {
+      TF_VAR_CLIENT_ID = "${var.CLIENT_ID}"
+      TF_VAR_CLIENT_SECRET = "${var.CLIENT_SECRET}"
+      TF_VAR_NAME = "${var.NAME}"
+      TF_VAR_DOMAIN = "${var.DOMAIN}"
+      TF_VAR_BRANCH = "${var.BRANCH}"
+      TF_VAR_ROLLBAR_SERVER = "${var.ROLLBAR_SERVER}"
+      DEBUG = "*"
+    }
+  }
+  
+  vpc_config {
+    subnet_ids = ["${aws_subnet_ids.PRIVATE_SUBNETS.ids}"]
+    security_group_ids = ["${aws_security_group.SECURITY.id}"]
+  }
+
+  tags {
+    Name = "${var.NAME}"
+  }
+}
+
+resource "aws_api_gateway_rest_api" "API" {
+  name = "${var.NAME}-${var.BRANCH}"
+}
+
+resource "aws_api_gateway_resource" "API_GATEWAY" {
+  path_part = "{proxy+}"
+  parent_id = "${aws_api_gateway_rest_api.API.root_resource_id}"
+  rest_api_id = "${aws_api_gateway_rest_api.API.id}"
+}
+
+resource "aws_api_gateway_method" "API_METHOD" {
+  rest_api_id = "${aws_api_gateway_rest_api.API.id}"
+  resource_id = "${aws_api_gateway_resource.API_GATEWAY.id}"
+  http_method = "ANY"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "API_INTEGRATION" {
+  rest_api_id = "${aws_api_gateway_rest_api.API.id}"
+  resource_id = "${aws_api_gateway_method.API_METHOD.resource_id}"
+  http_method = "${aws_api_gateway_method.API_METHOD.http_method}"
+
+  integration_http_method = "POST"
+  type = "AWS_PROXY"
+  uri = "${replace(aws_lambda_function.LAMBDA.invoke_arn, ":$LATEST", "")}"
+}
+
+resource "aws_api_gateway_integration_response" "API_RESPONSE" {
+  depends_on = [
+    "aws_api_gateway_integration.API_INTEGRATION",
+  ]
+
+  rest_api_id = "${aws_api_gateway_rest_api.API.id}"
+  resource_id = "${aws_api_gateway_resource.API_GATEWAY.id}"
+  http_method = "${aws_api_gateway_method.API_METHOD.http_method}"
+  status_code = "200"
+}
+
+resource "aws_api_gateway_deployment" "API_DEPLOYMENT" {
+  depends_on = [
+    "aws_api_gateway_integration_response.API_RESPONSE",
+  ]
+
+  rest_api_id = "${aws_api_gateway_rest_api.API.id}"
+  stage_name = "PROD"
+}
+
+resource "aws_api_gateway_domain_name" "API_DOMAIN" {
+  domain_name = "dynamic-${var.BRANCH}.${var.DOMAIN}"
+
+  certificate_arn = "${aws_acm_certificate.CERTIFICATE.arn}"
+}
+
+resource "aws_api_gateway_base_path_mapping" "API_MAP" {
+  api_id = "${aws_api_gateway_rest_api.API.id}"
+  stage_name = "${aws_api_gateway_deployment.API_DEPLOYMENT.stage_name}"
+  domain_name = "${aws_api_gateway_domain_name.API_DOMAIN.domain_name}"
+}
+
+resource "aws_lambda_permission" "LAMBDA_PERMISSION" {
+  statement_id = "AllowAPIGatewayInvoke"
+  action = "lambda:InvokeFunction"
+  function_name = "${var.NAME}-${var.BRANCH}"
+  principal = "apigateway.amazonaws.com"
+  source_arn = "${aws_api_gateway_deployment.API_DEPLOYMENT.execution_arn}/*/*"
+}
+
+resource "aws_route53_record" "API_RECORD" {
+  name = "dynamic-${var.BRANCH}.${var.DOMAIN}."
+  type = "A"
+  zone_id = "${aws_route53_zone.ZONE.zone_id}"
+
+  alias {
+    evaluate_target_health = false
+    name = "${aws_api_gateway_domain_name.API_GATEWAY.cloudfront_domain_name}"
+    zone_id = "${aws_api_gateway_domain_name.API_GATEWAY.cloudfront_zone_id}"
+  }
+}
