@@ -32,7 +32,7 @@ gulp.task(
     plugins: [ uglify.uglify() ],
   })
     .pipe(source("index.js"))
-    .pipe(gulp.dest("index.js")),
+    .pipe(gulp.dest("./")),
 );
 
 gulp.task(
