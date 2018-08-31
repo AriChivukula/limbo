@@ -8,10 +8,18 @@ var uglify = require("rollup-plugin-uglify");
 var project = ts.createProject("tsconfig.json");
 
 gulp.task(
+  "build:0",
+  () => gulp.src(["source/*.ts"])
+    .pipe(project())
+    .js
+    .pipe(gulp.dest("build/")),
+);
+
+gulp.task(
   "build:1",
-  () => gulp.src("source/*.ts")
+  () => gulp.src("build/*.js")
     .pipe(babel({
-      presets: ["@babel/preset-env"],
+      presets: [["@babel/preset-env", { "modules": false }]],
     }))
     .pipe(gulp.dest("build/")),
 );
@@ -30,6 +38,7 @@ gulp.task(
 gulp.task(
   "build",
   gulp.series(
+    "build:0",
     "build:1",
     "build:2",
   ),
