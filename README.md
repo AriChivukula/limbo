@@ -1,1 +1,1 @@
-# Limbo Isn't Ment to be Bar Ordained
+# Limbo Isn't Meant to be Bar Ordained
