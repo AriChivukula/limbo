@@ -11,8 +11,6 @@ import bearer from "express-bearer-token";
 import helmet from "helmet";
 import Rollbar from "rollbar";
 
-const DB: any = FOIA_DB;
-
 const app: express.Express = express();
 
 app.use(
