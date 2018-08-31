@@ -8,6 +8,9 @@
   "AWS_SECRET_ACCESS_KEY": {
     "description": "AWS Secret"
   },
+  "CC_TEST_REPORTER_ID": {
+    "description": "CC Token"
+  },
   "GITHUB_TOKEN": {
     "description": "GitHub Token"
   },
