@@ -6,6 +6,8 @@ variable "NAME" {}
 
 variable "DOMAIN" {}
 
+variable "ROLLBAR_SERVER" {}
+
 provider "aws" {}
 
 resource "aws_vpc" "VPC" {
