@@ -1,4 +1,8 @@
-yarn.lock
-node_modules
+/coverage
+/build
+/node_modules
+*.backup
+*.terraform
 index.js
-build
+package-lock.json
+yarn.lock
