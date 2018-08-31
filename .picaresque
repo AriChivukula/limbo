@@ -1,0 +1,23 @@
+{
+  "AWS_ACCESS_KEY_ID": {
+    "description": "AWS ID"
+  },
+  "AWS_DEFAULT_REGION": {
+    "description": "AWS Region"
+  },
+  "AWS_SECRET_ACCESS_KEY": {
+    "description": "AWS Secret"
+  },
+  "GITHUB_TOKEN": {
+    "description": "GitHub Token"
+  },
+  "GITHUB_USER": {
+    "description": "GitHub User"
+  },
+  "TF_VAR_DOMAIN": {
+    "description": "Domain"
+  },
+  "TF_VAR_NAME": {
+    "description": "Name"
+  }
+}
