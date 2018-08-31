@@ -1,0 +1,41 @@
+language: node_js
+node_js:
+- node
+cache: yarn
+install:
+- npm install --global --upgrade yarn
+- yarn install
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+- unzip terraform_0.11.7_linux_amd64.zip
+- rm terraform_0.11.7_linux_amd64.zip
+- yarn picaresque
+jobs:
+  include:
+  - stage: Build
+    if: ( type = push ) AND ( branch != master )
+    script:
+    - yarn outdated
+    - yarn foia-db
+    - ./cc-test-reporter before-build
+    - yarn nyc mocha
+    - yarn nyc report
+    - ./cc-test-reporter after-build
+    - yarn gulp build
+  - stage: Deploy
+    if: ( type = push ) AND ( branch = master )
+    script:
+    - yarn gulp build
+    - yarn install --production=true --ignore-engines
+    - zip -q -r dynamic.zip node_modules index.js .foia-db .foia-db.json
+    - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
+    - ./terraform apply -auto-approve
+  - stage: Actualize
+    if: type = api
+    script:
+    - yarn foia-db --compile
+    - git remote add target "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
+    - git add -A
+    - git commit -m "ACTUALIZE ${TRAVIS_BUILD_NUMBER}"
+    - git push target HEAD:$TRAVIS_BRANCH
