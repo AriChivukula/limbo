@@ -8,7 +8,7 @@ variable "DOMAIN" {}
 
 provider "aws" {}
 
-resource "aws_vpc" "ob_vpc" {
+resource "aws_vpc" "VPC" {
   cidr_block = "192.168.0.0/16"
 
   tags {
@@ -16,30 +16,13 @@ resource "aws_vpc" "ob_vpc" {
   }
 }
 
-data "aws_availability_zones" "ob_azs" {}
+data "aws_availability_zones" "AZS" {}
 
-resource "aws_subnet" "ob_subnet_public" {
-  count = "${length(data.aws_availability_zones.ob_azs.names)}"
-  cidr_block = "${cidrsubnet(aws_vpc.ob_vpc.cidr_block, 8, count.index)}"
-  vpc_id = "${aws_vpc.ob_vpc.id}"
-  availability_zone = "${data.aws_availability_zones.ob_azs.names[count.index]}"
-
-  tags {
-    Name = "${var.NAME}"
-    Type = "Public"
-  }
-}
-
-resource "aws_internet_gateway" "ob_internet" {
-  vpc_id = "${aws_vpc.ob_vpc.id}"
-
-  tags {
-    Name = "${var.NAME}"
-  }
-}
-
-resource "aws_route_table" "ob_table_public" {
-  vpc_id = "${aws_vpc.ob_vpc.id}"
+resource "aws_subnet" "PUBLIC_SUBNETS" {
+  count = "${length(data.aws_availability_zones.AZS.names)}"
+  cidr_block = "${cidrsubnet(aws_vpc.VPC.cidr_block, 8, count.index)}"
+  vpc_id = "${aws_vpc.VPC.id}"
+  availability_zone = "${data.aws_availability_zones.AZS.names[count.index]}"
 
   tags {
     Name = "${var.NAME}"
@@ -47,36 +30,53 @@ resource "aws_route_table" "ob_table_public" {
   }
 }
 
-resource "aws_route" "ob_route_iw" {
-  route_table_id = "${aws_route_table.ob_table_public.id}"
-  gateway_id = "${aws_internet_gateway.ob_internet.id}"
+resource "aws_internet_gateway" "INTERNET_GATEWAY" {
+  vpc_id = "${aws_vpc.VPC.id}"
+
+  tags {
+    Name = "${var.NAME}"
+  }
+}
+
+resource "aws_route_table" "PUBLIC_TABLE" {
+  vpc_id = "${aws_vpc.VPC.id}"
+
+  tags {
+    Name = "${var.NAME}"
+    Type = "Public"
+  }
+}
+
+resource "aws_route" "PUBLIC_ROUTE" {
+  route_table_id = "${aws_route_table.PUBLIC_TABLE.id}"
+  gateway_id = "${aws_internet_gateway.INTERNET_GATEWAY.id}"
   destination_cidr_block = "0.0.0.0/0"
 }
 
-resource "aws_route_table_association" "ob_assoc_public" {
-  count = "${length(data.aws_availability_zones.ob_azs.names)}"
-  subnet_id = "${element(aws_subnet.ob_subnet_public.*.id, count.index)}"
-  route_table_id = "${aws_route_table.ob_table_public.id}"
+resource "aws_route_table_association" "PUBLIC_ASSOC" {
+  count = "${length(data.aws_availability_zones.AZS.names)}"
+  subnet_id = "${element(aws_subnet.PUBLIC_SUBNETS.id, count.index)}"
+  route_table_id = "${aws_route_table.PUBLIC_TABLE.id}"
 }
 
-resource "aws_eip" "ob_eip" {
+resource "aws_eip" "IP" {
   vpc = true
 }
 
-resource "aws_nat_gateway" "ob_nat" {
-  allocation_id = "${aws_eip.ob_eip.id}"
-  subnet_id = "${aws_subnet.ob_subnet_public.0.id}"
+resource "aws_nat_gateway" "NAT" {
+  allocation_id = "${aws_eip.IP.id}"
+  subnet_id = "${aws_subnet.PUBLIC_SUBNETS.0.id}"
   
   tags {
     Name = "${var.NAME}"
   }
 }
 
-resource "aws_subnet" "ob_subnet_private" {
-  count = "${length(data.aws_availability_zones.ob_azs.names)}"
-  cidr_block = "${cidrsubnet(aws_vpc.ob_vpc.cidr_block, 8, count.index + length(data.aws_availability_zones.ob_azs.names))}"
-  vpc_id = "${aws_vpc.ob_vpc.id}"
-  availability_zone = "${data.aws_availability_zones.ob_azs.names[count.index]}"
+resource "aws_subnet" "PRIVATE_SUBNETS" {
+  count = "${length(data.aws_availability_zones.AZS.names)}"
+  cidr_block = "${cidrsubnet(aws_vpc.VPC.cidr_block, 8, count.index + length(data.aws_availability_zones.AZS.names))}"
+  vpc_id = "${aws_vpc.VPC.id}"
+  availability_zone = "${data.aws_availability_zones.AZS.names[count.index]}"
 
   tags {
     Name = "${var.NAME}"
@@ -84,8 +84,8 @@ resource "aws_subnet" "ob_subnet_private" {
   }
 }
 
-resource "aws_route_table" "ob_table_private" {
-  vpc_id = "${aws_vpc.ob_vpc.id}"
+resource "aws_route_table" "PRIVATE_TABLE" {
+  vpc_id = "${aws_vpc.VPC.id}"
 
   tags {
     Name = "${var.NAME}"
@@ -93,21 +93,21 @@ resource "aws_route_table" "ob_table_private" {
   }
 }
 
-resource "aws_route" "ob_route_nat" {
-  route_table_id  = "${aws_route_table.ob_table_private.id}"
+resource "aws_route" "PRIVATE_ROUTE" {
+  route_table_id  = "${aws_route_table.PRIVATE_TABLE.id}"
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = "${aws_nat_gateway.ob_nat.id}"
+  nat_gateway_id = "${aws_nat_gateway.NAT.id}"
 }
 
-resource "aws_route_table_association" "ob_assoc_private" {
-  count = "${length(data.aws_availability_zones.ob_azs.names)}"
-  subnet_id = "${element(aws_subnet.ob_subnet_private.*.id, count.index)}"
-  route_table_id = "${aws_route_table.ob_table_private.id}"
+resource "aws_route_table_association" "PRIVATE_ASSOC" {
+  count = "${length(data.aws_availability_zones.AZS.names)}"
+  subnet_id = "${element(aws_subnet.PRIVATE_SUBNETS.*.id, count.index)}"
+  route_table_id = "${aws_route_table.PRIVATE_TABLE.id}"
 }
 
-resource "aws_security_group" "ob_security" {
+resource "aws_security_group" "SECURITY" {
   name = "${var.NAME}"
-  vpc_id = "${aws_vpc.ob_vpc.id}"
+  vpc_id = "${aws_vpc.VPC.id}"
 
   ingress {
     from_port = 0
@@ -124,7 +124,7 @@ resource "aws_security_group" "ob_security" {
   }
 }
 
-resource "aws_acm_certificate" "ob_certificate" {
+resource "aws_acm_certificate" "CERTIFICATE" {
   domain_name = "${var.DOMAIN}"
   subject_alternative_names = ["*.${var.DOMAIN}"]
   validation_method = "DNS"
@@ -134,7 +134,7 @@ resource "aws_acm_certificate" "ob_certificate" {
   }
 }
 
-resource "aws_route53_zone" "ob_zone" {
+resource "aws_route53_zone" "ZONE" {
   name = "${var.DOMAIN}."
 
   tags {
@@ -142,24 +142,20 @@ resource "aws_route53_zone" "ob_zone" {
   }
 }
 
-resource "aws_route53_record" "ob_record" {
-  depends_on = [
-    "aws_acm_certificate.ob_certificate",
-  ]
-
-  name = "${aws_acm_certificate.ob_certificate.domain_validation_options.0.resource_record_name}"
-  records = ["${aws_acm_certificate.ob_certificate.domain_validation_options.0.resource_record_value}"]
+resource "aws_route53_record" "CERTIFICATE_RECORD" {
+  name = "${aws_acm_certificate.CERTIFICATE.domain_validation_options.0.resource_record_name}"
+  records = ["${aws_acm_certificate.CERTIFICATE.domain_validation_options.0.resource_record_value}"]
   ttl = 60
-  type = "${aws_acm_certificate.ob_certificate.domain_validation_options.0.resource_record_type}"
-  zone_id = "${aws_route53_zone.ob_zone.zone_id}"
+  type = "${aws_acm_certificate.CERTIFICATE.domain_validation_options.0.resource_record_type}"
+  zone_id = "${aws_route53_zone.ZONE.zone_id}"
 }
 
-resource "aws_acm_certificate_validation" "ob_validation" {
-  certificate_arn = "${aws_acm_certificate.ob_certificate.arn}"
-  validation_record_fqdns = ["${aws_route53_record.ob_record.fqdn}"]
+resource "aws_acm_certificate_validation" "VALIDATION" {
+  certificate_arn = "${aws_acm_certificate.CERTIFICATE.arn}"
+  validation_record_fqdns = ["${aws_route53_record.CERTIFICATE_RECORD.fqdn}"]
 }
 
-resource "aws_iam_role" "ob_iam" {
+resource "aws_iam_role" "IAM" {
   name = "${var.NAME}"
 
   assume_role_policy = <<EOF
@@ -179,12 +175,12 @@ resource "aws_iam_role" "ob_iam" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "ob_permission_lambda" {
-  role = "${aws_iam_role.ob_iam.name}"
+resource "aws_iam_role_policy_attachment" "IAM_LAMBDA" {
+  role = "${aws_iam_role.IAM.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_iam_role_policy_attachment" "ob_permission_vpc" {
-  role = "${aws_iam_role.ob_iam.name}"
+resource "aws_iam_role_policy_attachment" "IAM_VPC" {
+  role = "${aws_iam_role.IAM.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
