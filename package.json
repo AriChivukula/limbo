@@ -5,7 +5,7 @@
   "nyc": {
     "all": true,
     "include": [
-      "source/*.ts",
+      "source/*.ts"
     ],
     "instrument": true,
     "extension": [
