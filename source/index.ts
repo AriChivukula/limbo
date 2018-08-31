@@ -1,5 +1,13 @@
 import "@babel/polyfill";
 
+import {
+  createEventAdapter,
+  SlackEventAdapter,
+} from "@slack/events-api";
+import {
+  createMessageAdapter,
+  SlackMessageAdapter,
+} from "@slack/interactive-messages";
 import lambda from "aws-serverless-express";
 import {
   json,
@@ -12,6 +20,8 @@ import helmet from "helmet";
 import Rollbar from "rollbar";
 
 const app: express.Express = express();
+const eventAdapter: SlackEventAdapter = createEventAdapter(process.env.TF_VAR_SLACK_SECRET);
+const messageAdapter: SlackMessageAdapter = createMessageAdapter(process.env.TF_VAR_SLACK_SECRET);
 
 app.use(
   cors(),
@@ -20,6 +30,9 @@ app.use(
   json(),
   urlencoded({ extended: true }),
 );
+
+app.use('/slack/event', eventAdapter.expressMiddleware());
+app.use('/slack/message', messageAdapter.expressMiddleware());
 
 app.use(
   (new Rollbar({
