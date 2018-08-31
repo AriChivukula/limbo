@@ -8,6 +8,8 @@ variable "DOMAIN" {}
 
 variable "ROLLBAR_SERVER" {}
 
+variable "SLACK_SECRET" {}
+
 provider "aws" {}
 
 resource "aws_vpc" "VPC" {
@@ -201,6 +203,7 @@ resource "aws_lambda_function" "LAMBDA" {
   environment {
     variables = {
       TF_VAR_ROLLBAR_SERVER = "${var.ROLLBAR_SERVER}"
+      TF_VAR_SLACK_SECRET = "${var.SLACK_SECRET}"
       DEBUG = "*"
     }
   }
