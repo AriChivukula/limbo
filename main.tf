@@ -200,11 +200,6 @@ resource "aws_lambda_function" "LAMBDA" {
 
   environment {
     variables = {
-      TF_VAR_CLIENT_ID = "${var.CLIENT_ID}"
-      TF_VAR_CLIENT_SECRET = "${var.CLIENT_SECRET}"
-      TF_VAR_NAME = "${var.NAME}"
-      TF_VAR_DOMAIN = "${var.DOMAIN}"
-      TF_VAR_BRANCH = "${var.BRANCH}"
       TF_VAR_ROLLBAR_SERVER = "${var.ROLLBAR_SERVER}"
       DEBUG = "*"
     }
