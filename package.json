@@ -19,7 +19,11 @@
     ]
   },
   "dependencies": {
+    "@aoberoi/passport-slack": "1.0.5",
     "@babel/polyfill": "7.0.0",
+    "@slack/client": "4.3.1",
+    "@slack/events-api": "2.0.0",
+    "@slack/interactive-messages": "1.0.1",
     "aws-serverless-express": "3.3.5",
     "body-parser": "1.18.3",
     "cors": "2.8.4",
@@ -27,6 +31,7 @@
     "express-bearer-token": "2.2.0",
     "foia-db": "0.2.0",
     "helmet": "3.13.0",
+    "passport": "0.3.2",
     "rollbar": "2.4.5"
   },
   "devDependencies": {
