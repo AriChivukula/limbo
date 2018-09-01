@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
+    "@slack/events-api": "2.1.0",
+    "@slack/interactive-messages": "1.0.1",
     "aws-serverless-express": "3.3.5",
     "body-parser": "1.18.3",
     "cors": "2.8.4",
