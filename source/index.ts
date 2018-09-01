@@ -9,27 +9,12 @@ import {
   SlackMessageAdapter,
 } from "@slack/interactive-messages";
 import lambda from "aws-serverless-express";
-import {
-  json,
-  urlencoded,
-} from "body-parser";
-import cors from "cors";
 import express from "express";
-import bearer from "express-bearer-token";
-import helmet from "helmet";
 import Rollbar from "rollbar";
 
 const app: express.Express = express();
 const eventAdapter: SlackEventAdapter = createEventAdapter(process.env.TF_VAR_SLACK_SECRET);
 const messageAdapter: SlackMessageAdapter = createMessageAdapter(process.env.TF_VAR_SLACK_SECRET);
-
-app.use(
-  cors(),
-  helmet(),
-  bearer(),
-  json(),
-  urlencoded({ extended: true }),
-);
 
 app.use('/slack/event', eventAdapter.expressMiddleware());
 app.use('/slack/message', messageAdapter.expressMiddleware());
