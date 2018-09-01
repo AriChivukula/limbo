@@ -1,11 +1,9 @@
 import "@babel/polyfill";
 
-/* @ts-ignore */
 import {
   createEventAdapter,
   SlackEventAdapter,
 } from "@slack/events-api";
-/* @ts-ignore */
 import {
   createMessageAdapter,
   SlackMessageAdapter,
