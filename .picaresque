@@ -28,5 +28,8 @@
   },
   "TF_VAR_SLACK_SECRET": {
     "description": "Slack Secret"
+  },
+  "TF_VAR_SLACK_TOKEN": {
+    "description": "Slack Secret"
   }
 }
