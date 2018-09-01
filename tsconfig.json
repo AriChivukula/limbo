@@ -37,6 +37,7 @@
     ],
     "module": "CommonJS",
     "moduleResolution": "Node",
+    "noImplicitAny": false,
     "target": "ES3",
     "strict": true
   }
