@@ -1,6 +1,9 @@
 import "@babel/polyfill";
 
 import {
+  WebClient,
+} from "@slack/client";
+import {
   createEventAdapter,
   SlackEventAdapter,
 } from "@slack/events-api";
@@ -13,8 +16,8 @@ import express from "express";
 import Rollbar from "rollbar";
 
 const app: express.Express = express();
-const eventAdapter: SlackEventAdapter = createEventAdapter(process.env.TF_VAR_SLACK_SECRET);
-const messageAdapter: SlackMessageAdapter = createMessageAdapter(process.env.TF_VAR_SLACK_SECRET);
+const eventAdapter: SlackEventAdapter = createEventAdapter(process.env.TF_VAR_SLACK_SIGNING_SECRET);
+const messageAdapter: SlackMessageAdapter = createMessageAdapter(process.env.TF_VAR_SLACK_SIGNING_SECRET);
 
 app.use('/slack/event', eventAdapter.expressMiddleware());
 app.use('/slack/message', messageAdapter.expressMiddleware());
