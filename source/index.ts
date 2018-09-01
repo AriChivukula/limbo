@@ -1,13 +1,15 @@
 import "@babel/polyfill";
 
+/* @ts-ignore */
 import {
   createEventAdapter,
   SlackEventAdapter,
-} /* @ts-ignore */ from "@slack/events-api";
+} from "@slack/events-api";
+/* @ts-ignore */
 import {
   createMessageAdapter,
   SlackMessageAdapter,
-} /* @ts-ignore */ from "@slack/interactive-messages";
+} from "@slack/interactive-messages";
 import lambda from "aws-serverless-express";
 import {
   json,
