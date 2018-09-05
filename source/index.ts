@@ -46,6 +46,10 @@ eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
   return;
 });
 
+eventAdapter.on("error", (error: Error): void => {
+  console.log(error);
+});
+
 app.use(
   (new Rollbar({
     accessToken: process.env.TF_VAR_ROLLBAR_SERVER,
