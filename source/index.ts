@@ -14,6 +14,7 @@ import {
 import lambda from "aws-serverless-express";
 import express from "express";
 import Rollbar from "rollbar";
+import wiki from "wikijs";
 
 const app: express.Express = express();
 const eventAdapter: SlackEventAdapter = createEventAdapter(process.env.TF_VAR_SLACK_SIGNING_SECRET);
