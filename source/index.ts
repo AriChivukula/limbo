@@ -52,7 +52,7 @@ app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
 eventAdapter.on("message", (message: any, body: any): void => {
-  if (message.channel_type !== "channel" || message.subtype) {
+  if (message.channel_type !== "channel" || message.subtype || message.user === "DCK4C559R") {
     return;
   }
   makeSync(
