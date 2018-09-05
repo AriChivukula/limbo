@@ -26,7 +26,8 @@
     "aws-serverless-express": "3.3.5",
     "express": "4.16.3",
     "foia-db": "0.2.0",
-    "rollbar": "2.4.5"
+    "rollbar": "2.4.5",
+    "wikijs": "4.8.1"
   },
   "devDependencies": {
     "@babel/core": "7.0.0",
