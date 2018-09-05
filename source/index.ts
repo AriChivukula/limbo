@@ -30,19 +30,17 @@ const web: WebClient = new WebClient(
 app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
-eventAdapter.on("message", (message: any, body: any): void => {
-  if (!message.channel_type !== "channel") {
+eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
+  if (message.channel_type !== "channel") {
     console.log("Did Ignore", message, body);
     return;
   }
   console.log("Replied To", message, body);
-  web.chat.postMessage({
+  await web.chat.postMessage({
     channel: message.channel,
     text: `Hello <@${message.user}>! :tada:`,
     thread_ts: message.ts,
-  })
-    .catch(console.error);
-  }
+  });
 });
 
 app.use(
