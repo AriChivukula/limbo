@@ -31,7 +31,7 @@ app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
 eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
-  if (message.channel_type !== "channel") {
+  if (message.channel_type !== "channel" || message.subtype) {
     console.log("Did Ignore", message, body);
     return;
   }
