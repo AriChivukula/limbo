@@ -35,6 +35,8 @@ eventAdapter.on("message", (message: any, body: any): any => {
   if (message.channel_type !== "channel" || message.subtype) {
     return console.log("Did Ignore", message, body);
   }
+  let data = await wiki.search(message.text);
+  console.log(data);
   console.log("Replied To", message, body);
   return web.chat.postMessage({
     channel: message.channel,
