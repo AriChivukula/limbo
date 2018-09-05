@@ -36,7 +36,7 @@ eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
     return;
   }
   try {
-    let data = await wiki.search(message.text);
+    let data = await wiki().search(message.text);
     console.log(data);
     await web.chat.postMessage({
       channel: message.channel,
