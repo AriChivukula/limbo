@@ -17,19 +17,17 @@ import Rollbar from "rollbar";
 
 export function makeSync<T>(
   wasAsync: Promise<T>,
-): T {
-  let result = wasAsync
+): T? {
+  wasAsync
     .catch((err: Error): void => {
       console.log(err);
     })
-    .then((): void => {
-      return;
+    .then((value: T): void => {
+      return value;
     })
     .catch((err: Error): void => {
       console.log(err);
     });
-
-  return result;
 }
 
 const app: express.Express = express();
