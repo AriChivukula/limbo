@@ -34,11 +34,15 @@ eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
   if (message.channel_type !== "channel" || message.subtype) {
     return;
   }
-  await web.chat.postMessage({
-    channel: message.channel,
-    text: `Hello <@${message.user}>! :tada:`,
-    thread_ts: message.ts,
-  });
+  try {
+    await web.chat.postMessage({
+      channel: message.channel,
+      text: `Hello <@${message.user}>! :tada:`,
+      thread_ts: message.ts,
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return;
 });
 
