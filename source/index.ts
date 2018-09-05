@@ -27,8 +27,21 @@ const web: WebClient = new WebClient(
   },
 );
 
-app.use('/slack/event', eventAdapter.expressMiddleware());
-app.use('/slack/message', messageAdapter.expressMiddleware());
+app.use("/slack/event", eventAdapter.expressMiddleware());
+app.use("/slack/message", messageAdapter.expressMiddleware());
+
+eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
+  if (message.channel_type !== "channel") {
+    console.log("Did Ignore", message, body);
+    return;
+  }
+  console.log("Replied To", message, body);
+  await web.chat.postMessage({
+    channel: message.channel,
+    text: `Hello <@${message.user}>! :tada:`,
+    thread_ts: message.ts,
+  });
+});
 
 app.use(
   (new Rollbar({
