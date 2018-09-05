@@ -44,7 +44,7 @@ eventAdapter.on("message", (message: any, body: any): void => {
     .then((response: any): void => {
       console.log("Did Reply", response);
     })
-    .catch((error: Error) => {
+    .catch((error: Error): void => {
       console.log("Didn't Reply", error);
     });
   return;
