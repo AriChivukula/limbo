@@ -47,7 +47,6 @@ eventAdapter.on("message", (message: any, body: any): any => {
     .catch((error: Error): void => {
       console.log("Didn't Reply", error);
     });
-  return;
 });
 
 app.use(
