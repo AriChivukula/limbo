@@ -56,7 +56,7 @@ eventAdapter.on("message", (message: any, body: any): void => {
   if (message.channel_type !== "channel" || message.subtype) {
     return;
   }
-  let result: MakeSyncResult = {};
+  let result: MakeSyncResult<any> = {};
   makeSync(wiki().search(message.text), result);
   console.log(result);
   makeSync(
