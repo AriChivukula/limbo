@@ -31,18 +31,22 @@ const web: WebClient = new WebClient(
 app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
-eventAdapter.on("message", (message: any, body: any): any => {
+eventAdapter.on("message", async (message: any, body: any): Promise<void> => {
   if (message.channel_type !== "channel" || message.subtype) {
-    return console.log("Did Ignore", message, body);
+    return;
   }
-  let data = await wiki.search(message.text);
-  console.log(data);
-  console.log("Replied To", message, body);
-  return web.chat.postMessage({
-    channel: message.channel,
-    text: `Hello <@${message.user}>! :tada:`,
-    thread_ts: message.ts,
-  });
+  try {
+    let data = await wiki.search(message.text);
+    console.log(data);
+    await web.chat.postMessage({
+      channel: message.channel,
+      text: `Hello <@${message.user}>! :tada:`,
+      thread_ts: message.ts,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  return;
 });
 
 app.use(
