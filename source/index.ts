@@ -15,21 +15,25 @@ import lambda from "aws-serverless-express";
 import express from "express";
 import Rollbar from "rollbar";
 
+interface MakeSyncResult<T> {
+  value?: T;
+  error?: Error;
+}
+
 export function makeSync<T>(
   wasAsync: Promise<T>,
-): T | null | void {
-  let value = null;
+  result: MakeSyncResult<T>,
+): void {
   wasAsync
-    .catch((err: Error): void => {
-      console.log(err);
+    .catch((error: Error): void => {
+      result.error = error;
     })
-    .then((resultValue: T): void => {
-      value = resultValue;
+    .then((value: any): void => {
+      result.value = value;
     })
-    .catch((err: Error): void => {
-      console.log(err);
+    .catch((error: Error): void => {
+      result.error = error;
     });
-  return value;
 }
 
 const app: express.Express = express();
@@ -57,6 +61,7 @@ eventAdapter.on("message", (message: any, body: any): void => {
       text: `Hello <@${message.user}>! :tada:`,
       thread_ts: message.ts,
     }),
+    {},
   );
   return;
 });
