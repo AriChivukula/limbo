@@ -14,6 +14,7 @@ import {
 import lambda from "aws-serverless-express";
 import express from "express";
 import Rollbar from "rollbar";
+import wiki from "wikijs";
 
 interface MakeSyncResult<T> {
   value?: T;
@@ -52,10 +53,12 @@ app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
 eventAdapter.on("app_mention", (message: any): void => {
+  let result: MakeSyncResult<any> = {};
+  makeSync(wiki().search(message.text), result);
   makeSync(
     web.chat.postMessage({
       channel: message.channel,
-      text: `Hello <@${message.user}>! :tada:`,
+      text: `<@${message.user}>: ${result.value.results[0].summary()}`,
     }),
     {},
   );
