@@ -58,11 +58,10 @@ eventAdapter.on("message", (message: any, body: any): void => {
   }
   let result: MakeSyncResult<any> = {};
   makeSync(wiki().search(message.text), result);
-  console.log(result);
   makeSync(
     web.chat.postMessage({
       channel: message.channel,
-      text: `Hello <@${message.user}>! :tada:`,
+      text: `<@${message.user}>: ${result.value.results[0].summary()}`,
       thread_ts: message.ts,
     }),
     {},
