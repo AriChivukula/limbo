@@ -59,7 +59,6 @@ eventAdapter.on("app_mention", (message: any): void => {
     web.chat.postMessage({
       channel: message.channel,
       text: `<@${message.user}>: ${result.value.results[0].summary()}`,
-      thread_ts: message.ts,
     }),
     {},
   );
