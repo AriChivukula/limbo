@@ -54,7 +54,7 @@ app.use("/slack/message", messageAdapter.expressMiddleware());
 
 eventAdapter.on("app_mention", (message: any): void => {
   let result: MakeSyncResult<any> = {};
-  makeSync(wiki().search(message.text), result);
+  makeSync(wiki().search(message.text.replace(/<.*>/gi, "")), result);
   makeSync(
     web.chat.postMessage({
       channel: message.channel,
