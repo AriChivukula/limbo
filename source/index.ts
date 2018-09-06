@@ -52,10 +52,7 @@ const web: WebClient = new WebClient(
 app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
-eventAdapter.on("message", (message: any, body: any): void => {
-  if (message.channel_type !== "channel" || message.subtype) {
-    return;
-  }
+eventAdapter.on("app_mention", (message: any): void => {
   let result: MakeSyncResult<any> = {};
   makeSync(wiki().search(message.text), result);
   makeSync(
