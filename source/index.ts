@@ -50,7 +50,7 @@ export async function resolveMessage(message: any): Promise<void> {
   let search: any = await wiki().search(message.text.replace(/<.*>/gi, ""));
   await web.chat.postMessage({
     channel: message.channel,
-    text: `<@${message.user}>: ${search.results[0].summary()}`,
+    text: `<@${message.user}>: ${search.results[0].summary}`,
   });
 }
 
