@@ -16,7 +16,7 @@ import express from "express";
 import Rollbar from "rollbar";
 import wiki from "wikijs";
 
-interface MakeSyncResult<T> {
+export interface MakeSyncResult<T> {
   value?: T;
   error?: Error;
 }
@@ -52,7 +52,7 @@ const web: WebClient = new WebClient(
 app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
-eventAdapter.on("app_mention", (message: any): void => {
+export function resolveMessage(message: any): void {
   let result: MakeSyncResult<any> = {};
   makeSync(wiki().search(message.text.replace(/<.*>/gi, "")), result);
   makeSync(
@@ -62,12 +62,9 @@ eventAdapter.on("app_mention", (message: any): void => {
     }),
     {},
   );
-  return;
-});
+}
 
-eventAdapter.on("error", (error: Error): void => {
-  console.log(error);
-});
+eventAdapter.on("app_mention", resolveMessage);
 
 app.use(
   (new Rollbar({
