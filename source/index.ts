@@ -17,23 +17,29 @@ import Rollbar from "rollbar";
 import wiki from "wikijs";
 
 export interface MakeSyncResult<T> {
-  value?: T;
-  error?: Error;
+  value: T | null;
+  error: Error | null;
 }
 
 export function makeSync<T>(
   wasAsync: Promise<T>,
-  result: MakeSyncResult<T>,
+  result?: MakeSyncResult<T>,
 ): void {
   wasAsync
     .catch((error: Error): void => {
-      result.error = error;
+      if (result) {
+        result.error = error;
+      }
     })
     .then((value: any): void => {
-      result.value = value;
+      if (result) {
+        result.value = value;
+      }
     })
     .catch((error: Error): void => {
-      result.error = error;
+      if (result) {
+        result.error = error;
+      }
     });
 }
 
@@ -53,14 +59,16 @@ app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
 export function resolveMessage(message: any): void {
-  let result: MakeSyncResult<any> = {};
+  let result: MakeSyncResult<any> = {
+    value: null,
+    error: null,
+  };
   makeSync(wiki().search(message.text.replace(/<.*>/gi, "")), result);
   makeSync(
     web.chat.postMessage({
       channel: message.channel,
       text: `<@${message.user}>: ${result.value.results[0].summary()}`,
     }),
-    {},
   );
 }
 
