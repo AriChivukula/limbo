@@ -16,24 +16,18 @@ import express from "express";
 import Rollbar from "rollbar";
 import wiki from "wikijs";
 
-interface MakeSyncResult<T> {
-  value?: T;
-  error?: Error;
-}
-
 export function makeSync<T>(
   wasAsync: Promise<T>,
-  result: MakeSyncResult<T>,
 ): void {
   wasAsync
     .catch((error: Error): void => {
-      result.error = error;
+      console.error(error);
     })
     .then((value: any): void => {
-      result.value = value;
+      console.info(value);
     })
     .catch((error: Error): void => {
-      result.error = error;
+      console.error(error);
     });
 }
 
@@ -52,22 +46,15 @@ const web: WebClient = new WebClient(
 app.use("/slack/event", eventAdapter.expressMiddleware());
 app.use("/slack/message", messageAdapter.expressMiddleware());
 
-eventAdapter.on("app_mention", (message: any): void => {
-  let result: MakeSyncResult<any> = {};
-  makeSync(wiki().search(message.text.replace(/<.*>/gi, "")), result);
-  makeSync(
-    web.chat.postMessage({
-      channel: message.channel,
-      text: `<@${message.user}>: ${result.value.results[0].summary()}`,
-    }),
-    {},
-  );
-  return;
-});
+export async function resolveMessage(message: any): Promise<void> {
+  let search: any = await wiki().search(message.text.replace(/<.*>/gi, ""));
+  await web.chat.postMessage({
+    channel: message.channel,
+    text: `<@${message.user}>: ${search.results[0].summary}`,
+  });
+}
 
-eventAdapter.on("error", (error: Error): void => {
-  console.log(error);
-});
+eventAdapter.on("app_mention", (message: any) => makeSync(resolveMessage(message)));
 
 app.use(
   (new Rollbar({
