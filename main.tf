@@ -18,6 +18,57 @@ variable "SLACK_REFRESH_TOKEN" {}
 
 provider "aws" {}
 
+data "aws_s3_bucket" "BUCKET" {
+  bucket = "${var.DOMAIN}"
+}
+
+locals {
+  files = [
+    {
+      file = "rules/1.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/2.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/81.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/82.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/83.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/84.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/85.md"
+      type = "text/markdown"
+    },
+    {
+      file = "rules/86.md"
+      type = "text/markdown"
+    },
+  ]
+}
+
+resource "aws_s3_bucket_object" "OBJECTS" {
+  count = "${length(local.files)}"
+  bucket = "${data.aws_s3_bucket.BUCKET.name}"
+  key = "${lookup(local.files[count.index], "file")}"
+  source = "${lookup(local.files[count.index], "file")}"
+  acl = "public-read"
+  content_type = "${lookup(local.files[count.index], "type")}"
+  etag = "${md5(file("${lookup(local.files[count.index], "file")}"))}"
+}
+
 resource "aws_vpc" "VPC" {
   cidr_block = "192.168.0.0/16"
 
