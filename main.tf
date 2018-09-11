@@ -61,7 +61,7 @@ locals {
 
 resource "aws_s3_bucket_object" "OBJECTS" {
   count = "${length(local.files)}"
-  bucket = "${data.aws_s3_bucket.BUCKET.name}"
+  bucket = "${data.aws_s3_bucket.BUCKET.id}"
   key = "${lookup(local.files[count.index], "file")}"
   source = "${lookup(local.files[count.index], "file")}"
   acl = "public-read"
