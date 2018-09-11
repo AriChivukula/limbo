@@ -22,6 +22,7 @@ jobs:
     - yarn nyc report
     - ./cc-test-reporter after-build
     - yarn gulp build
+    - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
   - stage: Deploy
     if: ( type = push ) AND ( branch = master )
     script:
