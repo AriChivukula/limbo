@@ -17,7 +17,6 @@ jobs:
     if: ( type = push ) AND ( branch != master )
     script:
     - yarn outdated
-    - yarn foia-db
     - ./cc-test-reporter before-build
     - yarn nyc mocha
     - yarn nyc report
@@ -28,13 +27,12 @@ jobs:
     script:
     - yarn gulp build
     - yarn install --production=true --ignore-engines
-    - zip -q -r dynamic.zip node_modules index.js .foia-db .foia-db.json
+    - zip -q -r dynamic.zip node_modules index.js
     - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
     - ./terraform apply -auto-approve
   - stage: Actualize
     if: type = api
     script:
-    - yarn foia-db --compile
     - git remote add target "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
     - git add -A
     - git commit -m "ACTUALIZE ${TRAVIS_BUILD_NUMBER}"
