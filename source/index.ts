@@ -15,6 +15,8 @@ import lambda from "aws-serverless-express";
 import express from "express";
 import Rollbar from "rollbar";
 import wiki from "wikijs";
+import unfluff from "unfluff";
+import urllib from "urllib";
 
 export function makeSync<T>(
   wasAsync: Promise<T>,
@@ -87,4 +89,10 @@ export function handler(
     event,
     context,
   );
+}
+
+if (require.main === module) {
+  let html = await urllib.request("https://supreme.justia.com/cases/federal/us/482/386/#tab-opinion-1957167");
+  let extracted = extractor(html.data);
+  console.log(extracted.text);
 }
