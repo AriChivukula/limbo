@@ -95,6 +95,7 @@ export async function scrape(): Promise<void> {
   let html = await urllib.request("https://supreme.justia.com/cases/federal/us/482/386/#tab-opinion-1957167");
   let extracted = unfluff(html.data);
   console.log(extracted.text);
+  console.log(extracted.title);
 }
 
 if (require.main === module) {
