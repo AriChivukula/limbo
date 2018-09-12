@@ -18,6 +18,8 @@ import wiki from "wikijs";
 import unfluff from "unfluff";
 import urllib from "urllib";
 import {
+  existsSync,
+  mkdirSync,
   readFileSync,
   writeFileSync,
 } from "fs";
@@ -101,6 +103,9 @@ export async function scrape(): Promise<void> {
     let url = config[name];
     let html = await urllib.request("https://supreme.justia.com/cases/federal/us/482/386/#tab-opinion-1957167");
     let extracted = unfluff(html.data);
+    if (!existsSync("scrape")) {
+      mkdirSync("scrape");
+    }
     writeFileSync("scrape/" + name + ".md", "# " + extracted.title + "\n\n" + extracted.text);
   }));
 }
