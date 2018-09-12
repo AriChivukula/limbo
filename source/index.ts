@@ -97,11 +97,12 @@ export function handler(
 
 export async function scrape(): Promise<void> {
   const config: any = JSON.parse(readFileSync("scrape.json", "ascii"));
-  await Promise.all(Object.keys(config).forEach(async (name: string) => {
+  await Promise.all(Object.keys(config).forEach(async (name: string): Promise<{}> => {
     let url = config[name];
     let html = await urllib.request("https://supreme.justia.com/cases/federal/us/482/386/#tab-opinion-1957167");
     let extracted = unfluff(html.data);
     writeFileSync("scrape/" + name + ".md", "# " + extracted.title + "\n\n" + extracted.text);
+    return {};
   }));
 }
 
