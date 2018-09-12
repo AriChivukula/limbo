@@ -91,8 +91,12 @@ export function handler(
   );
 }
 
-if (require.main === module) {
+export async function scrape(): Promise<void> {
   let html = await urllib.request("https://supreme.justia.com/cases/federal/us/482/386/#tab-opinion-1957167");
-  let extracted = extractor(html.data);
+  let extracted = unfluff(html.data);
   console.log(extracted.text);
+}
+
+if (require.main === module) {
+  makeSync(scrape());
 }
