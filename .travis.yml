@@ -34,6 +34,7 @@ jobs:
   - stage: Actualize
     if: type = api
     script:
+    - yarn ts-node source/index.ts
     - git remote add target "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
     - git add -A
     - git commit -m "ACTUALIZE ${TRAVIS_BUILD_NUMBER}"
