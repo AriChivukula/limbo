@@ -101,7 +101,7 @@ export async function scrape(): Promise<void> {
   const config: any = JSON.parse(readFileSync("scrape.json", "ascii"));
   await Promise.all(Object.keys(config).map(async (name: string) => {
     let url = config[name];
-    let html = await urllib.request("https://supreme.justia.com/cases/federal/us/482/386/#tab-opinion-1957167");
+    let html = await urllib.request(url);
     let extracted = unfluff(html.data);
     if (!existsSync("scrape")) {
       mkdirSync("scrape");
