@@ -16,57 +16,25 @@ variable "SLACK_CLIENT_SECRET" {}
 
 variable "SLACK_REFRESH_TOKEN" {}
 
+variable "S3_ID" {}
+
+variable "S3_SECRET" {}
+
+variable "S3_REGION" {}
+
 provider "aws" {}
 
-data "aws_s3_bucket" "BUCKET" {
-  bucket = "${var.DOMAIN}"
-}
+resource "aws_s3_bucket" "BUCKET" {
+  bucket = "${var.NAME}"
+  force_destroy = true
 
-locals {
-  files = [
-    {
-      file = "rules/1.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/2.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/81.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/82.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/83.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/84.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/85.md"
-      type = "text/markdown"
-    },
-    {
-      file = "rules/86.md"
-      type = "text/markdown"
-    },
-  ]
-}
+  tags {
+    Name = "${var.NAME}"
+  }
 
-resource "aws_s3_bucket_object" "OBJECTS" {
-  count = "${length(local.files)}"
-  bucket = "${data.aws_s3_bucket.BUCKET.id}"
-  key = "${lookup(local.files[count.index], "file")}"
-  source = "${lookup(local.files[count.index], "file")}"
-  acl = "public-read"
-  content_type = "${lookup(local.files[count.index], "type")}"
-  etag = "${md5(file("${lookup(local.files[count.index], "file")}"))}"
+  versioning {
+    enabled = true
+  }
 }
 
 resource "aws_vpc" "VPC" {
@@ -216,8 +184,8 @@ resource "aws_acm_certificate_validation" "VALIDATION" {
   validation_record_fqdns = ["${aws_route53_record.CERTIFICATE_RECORD.fqdn}"]
 }
 
-resource "aws_iam_role" "IAM" {
-  name = "${var.NAME}"
+resource "aws_iam_role" "IAM_LAMBDA" {
+  name = "${var.NAME}-LAMBDA"
 
   assume_role_policy = <<EOF
 {
@@ -236,20 +204,20 @@ resource "aws_iam_role" "IAM" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "IAM_LAMBDA" {
-  role = "${aws_iam_role.IAM.name}"
+resource "aws_iam_role_policy_attachment" "IAM_ROLE_LAMBDA" {
+  role = "${aws_iam_role.IAM_LAMBDA.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy_attachment" "IAM_VPC" {
-  role = "${aws_iam_role.IAM.name}"
+  role = "${aws_iam_role.IAM_LAMBDA.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_lambda_function" "LAMBDA" {
   function_name = "${var.NAME}"
   handler = "index.handler"
-  role = "${aws_iam_role.IAM.arn}"
+  role = "${aws_iam_role.IAM_LAMBDA.arn}"
   runtime = "nodejs8.10"
   memory_size = 256
   timeout = 300
@@ -354,5 +322,159 @@ resource "aws_route53_record" "API_RECORD" {
     evaluate_target_health = false
     name = "${aws_api_gateway_domain_name.API_DOMAIN.cloudfront_domain_name}"
     zone_id = "${aws_api_gateway_domain_name.API_DOMAIN.cloudfront_zone_id}"
+  }
+}
+
+resource "aws_iam_role" "IAM_ECS" {
+  name = "${var.NAME}-ECS"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "IAM_ROLE_ECS" {
+  role = "${aws_iam_role.IAM_ECS.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_lb" "LB" {
+  name = "${var.NAME}"
+  subnets = ["${aws_subnet.PUBLIC_SUBNETS.*.id}"]
+  security_groups = ["${aws_security_group.SECURITY.id}"]
+  
+  tags {
+    Name = "${var.NAME}"
+  }
+}
+
+resource "aws_lb_target_group" "LB_TARGET" {
+  name = "${var.NAME}"
+  port = 80
+  protocol = "HTTP"
+  vpc_id = "${aws_vpc.VPC.id}"
+  target_type = "ip"
+  
+  health_check = {
+    path = "/"
+    matcher = "200-399"
+  }
+  
+  tags {
+    Name = "${var.NAME}"
+  }
+}
+
+resource "aws_lb_listener" "LB_LISTENER" {
+  load_balancer_arn = "${aws_lb.LB.id}"
+  port = 443
+  protocol = "HTTPS"
+  ssl_policy = "ELBSecurityPolicy-2016-08"
+  certificate_arn = "${aws_acm_certificate.CERTIFICATE.arn}"
+
+  default_action {
+    target_group_arn = "${aws_lb_target_group.LB_TARGET.id}"
+    type = "forward"
+  }
+}
+
+resource "aws_route53_record" "LB_ROUTE" {
+  zone_id = "${aws_route53_zone.ZONE.zone_id}"
+  name = "docassemble.${var.DOMAIN}."
+  type = "A"
+
+  alias {
+    name = "${aws_lb.LB.dns_name}"
+    zone_id = "${aws_lb.LB.zone_id}"
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_ecs_cluster" "CLUSTER" {
+  name = "${var.NAME}"
+}
+
+resource "aws_ecs_task_definition" "TASK" {
+  container_definitions = <<DEFINITION
+[
+  {
+    "name": "${var.NAME}",
+    "image": "jhpyle/docassemble:latest",
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "us-east-1",
+        "awslogs-group": "${var.NAME}",
+        "awslogs-stream-prefix": "main"
+      }
+    },
+    "environment": [
+      {
+        "name": "S3ENABLE",
+        "value": "true"
+      },
+      {
+        "name": "S3BUCKET",
+        "value": "${var.NAME}"
+      },
+      {
+        "name": "S3ACCESSKEY",
+        "value": "${var.S3_ID}"
+      },
+      {
+        "name": "S3SECRETACCESSKEY",
+        "value": "${var.S3_SECRET}"
+      },
+      {
+        "name": "S3REGION",
+        "value": "${var.S3_REGION}"
+      }
+    ]
+  }
+]
+DEFINITION
+
+  cpu = 1024
+  execution_role_arn = "${aws_iam_role.IAM_ECS.arn}"
+  family = "${var.NAME}"
+  memory = 2048
+  network_mode = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+}
+
+resource "aws_ecs_service" "SERVICE" {
+  cluster = "${aws_ecs_cluster.CLUSTER.id}"
+  desired_count = 2
+  launch_type = "FARGATE"
+  name = "${var.NAME}"
+  task_definition = "${aws_ecs_task_definition.TASK.arn}"
+  health_check_grace_period_seconds  = 600
+
+  network_configuration {
+    subnets = ["${aws_subnet.PRIVATE_SUBNETS.*.id}"]
+    security_groups = ["${aws_security_group.SECURITY.id}"]
+  }
+
+  load_balancer {
+    target_group_arn = "${aws_lb_target_group.LB_TARGET.id}"
+    container_name   = "${var.NAME}"
+    container_port   = 80
   }
 }
