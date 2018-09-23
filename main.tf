@@ -24,19 +24,6 @@ variable "S3_REGION" {}
 
 provider "aws" {}
 
-resource "aws_s3_bucket" "BUCKET" {
-  bucket = "${var.NAME}"
-  force_destroy = true
-
-  tags {
-    Name = "${var.NAME}"
-  }
-
-  versioning {
-    enabled = true
-  }
-}
-
 resource "aws_vpc" "VPC" {
   cidr_block = "192.168.0.0/16"
 
