@@ -419,7 +419,7 @@ resource "aws_ecs_task_definition" "TASK" {
       },
       {
         "name": "S3BUCKET",
-        "value": "${var.NAME}"
+        "value": "${var.DOMAIN}"
       },
       {
         "name": "S3ACCESSKEY",
