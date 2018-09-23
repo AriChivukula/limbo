@@ -389,7 +389,7 @@ resource "aws_lb_listener" "LB_LISTENER" {
 }
 
 resource "aws_route53_record" "LB_ROUTE" {
-  zone_id = "${aws_route53_zone.da_zone.zone_id}"
+  zone_id = "${aws_route53_zone.ZONE.zone_id}"
   name = "docassemble.${var.DOMAIN}."
   type = "A"
 
