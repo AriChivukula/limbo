@@ -37,5 +37,14 @@
   },
   "TF_VAR_SLACK_REFRESH_TOKEN": {
     "description": "Slack Secret"
+  },
+  "TF_VAR_S3_ID": {
+    "description": "AWS ID"
+  },
+  "TF_VAR_S3_SECRET": {
+    "description": "AWS Region"
+  },
+  "TF_VAR_S3_REGION": {
+    "description": "AWS Secret"
   }
 }
