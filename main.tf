@@ -433,10 +433,6 @@ resource "aws_ecs_task_definition" "TASK" {
       {
         "name": "S3REGION",
         "value": "${var.S3_REGION}"
-      },
-      {
-        "name": "EC2",
-        "value": "true"
       }
     ]
   }
