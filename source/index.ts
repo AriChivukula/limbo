@@ -13,7 +13,6 @@ import {
 } from "@slack/interactive-messages";
 import lambda from "aws-serverless-express";
 import express from "express";
-import Rollbar from "rollbar";
 import wiki from "wikijs";
 import unfluff from "unfluff";
 import urllib from "urllib";
@@ -63,16 +62,6 @@ export async function resolveMessage(message: any): Promise<void> {
 }
 
 eventAdapter.on("app_mention", (message: any) => makeSync(resolveMessage(message)));
-
-app.use(
-  (new Rollbar({
-    accessToken: process.env.TF_VAR_ROLLBAR_SERVER,
-    verbose: true,
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-  }))
-    .errorHandler(),
-);
 
 export function handler(
   event: any,
