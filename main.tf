@@ -6,8 +6,6 @@ variable "NAME" {}
 
 variable "DOMAIN" {}
 
-variable "ROLLBAR_SERVER" {}
-
 variable "SLACK_SIGNING_SECRET" {}
 
 variable "SLACK_CLIENT_ID" {}
@@ -217,7 +215,6 @@ resource "aws_lambda_function" "LAMBDA" {
 
   environment {
     variables = {
-      TF_VAR_ROLLBAR_SERVER = "${var.ROLLBAR_SERVER}"
       TF_VAR_SLACK_SIGNING_SECRET = "${var.SLACK_SIGNING_SECRET}"
       TF_VAR_SLACK_CLIENT_ID = "${var.SLACK_CLIENT_ID}"
       TF_VAR_SLACK_CLIENT_SECRET = "${var.SLACK_CLIENT_SECRET}"
