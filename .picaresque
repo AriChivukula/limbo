@@ -23,9 +23,6 @@
   "TF_VAR_NAME": {
     "description": "Name"
   },
-  "TF_VAR_ROLLBAR_SERVER": {
-    "description": "Rollbar server token"
-  },
   "TF_VAR_SLACK_SIGNING_SECRET": {
     "description": "Slack signs the requests we send you using this secret. Confirm that each request comes from Slack by verifying its unique signature."
   },
