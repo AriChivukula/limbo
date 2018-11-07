@@ -17,10 +17,7 @@ jobs:
     if: ( type = push ) AND ( branch != master )
     script:
     - yarn outdated
-    - ./cc-test-reporter before-build
-    - yarn nyc mocha
-    - yarn nyc report
-    - ./cc-test-reporter after-build
+    - yarn mocha
     - yarn gulp build
     - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
   - stage: Deploy
