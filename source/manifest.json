@@ -9,14 +9,13 @@
   },
   "page_action": {
     "default_title": "limbo",
-    "default_popup": "popup.html"
   },
   "permissions": ["tabs", "https://*.westlaw.com/*"],
   "web_accessible_resources": ["*"],
   "content_scripts": [
    {
     "matches": ["https://*.westlaw.com/*"],
-    "js": ["index.js"]
+    "js": ["content.js"]
    }
  ]
 }
