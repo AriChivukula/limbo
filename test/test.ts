@@ -3,16 +3,14 @@ import "mocha";
 import * as chai from "chai";
 
 import {
-  resolveMessage,
+  shouldRefreshPage,
 } from "../source/index";
 
 it(
-  "resolveMessage",
+  "shouldRefreshPage",
   async (): Promise<void> => {
-    resolveMessage({
-      channel: "test2",
-      text: "test1",
-      user: "test3",
-    });
+    expect(shouldRefreshPage("https://westlaw.com/")).to.be.true;
+    expect(shouldRefreshPage("https://next.westlaw.com/blah/")).to.be.true;
+    expect(shouldRefreshPage("https://worstlaw.com/")).to.be.false;
   },
 );
