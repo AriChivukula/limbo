@@ -9,8 +9,8 @@ import {
 it(
   "shouldRefreshPage",
   async (): Promise<void> => {
-    expect(shouldRefreshPage("https://westlaw.com/")).to.be.true;
-    expect(shouldRefreshPage("https://next.westlaw.com/blah/")).to.be.true;
-    expect(shouldRefreshPage("https://worstlaw.com/")).to.be.false;
+    chai.expect(shouldRefreshPage("https://westlaw.com/")).to.be.true;
+    chai.expect(shouldRefreshPage("https://next.westlaw.com/blah/")).to.be.true;
+    chai.expect(shouldRefreshPage("https://worstlaw.com/")).to.be.false;
   },
 );
