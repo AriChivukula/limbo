@@ -26,6 +26,7 @@ jobs:
     deploy:
       provider: releases
       name: $TRAVIS_BUILD_NUMBER
+      user: $GITHUB_USER
       api_key: $GITHUB_TOKEN
       file: limbo.zip
       skip_cleanup: true
