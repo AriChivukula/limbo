@@ -1,6 +1,12 @@
 import "mocha";
 
 import * as chai from "chai";
+import {
+  readFileSync,
+} from "fs";
+import {
+  join,
+} from "path";
 import puppeteer from "puppeteer";
 
 import {
@@ -21,8 +27,8 @@ it(
   async (): Promise<void> => {
     const browser = await puppeteer.launch({ args: [ "--no-sandbox" ] });
     const page = await browser.newPage();
-    await page.goto(`file:${path.join(__dirname, "test.html")}`);
-    const script = fs.readFileSync("build/content.js");
+    await page.goto(`file:${join(__dirname, "test.html")}`);
+    const script = readFileSync("build/content.js");
     const ctx = await page.mainFrame().executionContext();
     const result = await ctx.evaluateHandle(script.toString());
     chai.expect(result.jsonValue()).to.equal("");
