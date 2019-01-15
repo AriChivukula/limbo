@@ -1,5 +1,4 @@
 import "@babel/polyfill";
-import chrome from "chrome";
 
 import {
   shouldRefreshPage
