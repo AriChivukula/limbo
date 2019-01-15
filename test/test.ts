@@ -4,7 +4,7 @@ import * as chai from "chai";
 
 import {
   shouldRefreshPage,
-} from "../source/index";
+} from "../source/content";
 
 it(
   "shouldRefreshPage",
