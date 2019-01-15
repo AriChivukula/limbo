@@ -22,8 +22,14 @@ jobs:
     if: ( type = push ) AND ( branch = master )
     script:
     - yarn gulp build
-    - yarn install --production=true --ignore-engines
-    - zip -q -r dynamic.zip node_modules index.js
+    - sed -i "s/TRAVIS_BUILD_NUMBER/${TRAVIS_BUILD_NUMBER}/g" ext/manifest.json
+    - zip limbo.zip ext/*
+    deploy:
+      provider: releases
+      name: $TRAVIS_BUILD_NUMBER
+      api_key: $GITHUB_TOKEN
+      file: limbo.zip
+      skip_cleanup: true
   - stage: Docassemble Test
     if: ( type = api ) AND ( branch != master )
     script:
