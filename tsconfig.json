@@ -32,7 +32,7 @@
       "ESNext.AsyncIterable",
       "ESNext.Array"
     ],
-    "module": "None",
+    "module": "System",
     "moduleResolution": "Node",
     "target": "ES3",
     "strict": true
