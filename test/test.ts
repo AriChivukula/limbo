@@ -7,7 +7,9 @@ import {
 import {
   join,
 } from "path";
-import puppeteer from "puppeteer";
+import {
+  launch,
+} from "puppeteer";
 
 import {
   shouldRefreshPage,
@@ -25,7 +27,7 @@ it(
 it(
   "extensionCanLoad",
   async (): Promise<void> => {
-    const browser = await puppeteer.launch({ args: [ "--no-sandbox" ] });
+    const browser = await launch({ args: [ "--no-sandbox" ] });
     const page = await browser.newPage();
     await page.goto(`file:${join(__dirname, "test.html")}`);
     const script = readFileSync("build/content.js");
