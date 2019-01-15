@@ -5,13 +5,19 @@ export function shouldRefreshPage(url: string): boolean {
 }
 
 export function refreshPageIfNeeded(): void {
-  if (shouldRefreshPage(window.location.href)) {
-    setTimeout(
-      window.location.reload,
-      60 * 1000,
-    );
+  console.log("Starting Refresh Clock");
+  if (!window) {
+    console.log("Test Exit");
+    return;
   }
+  if (!shouldRefreshPage(window.location.href)) {
+    console.log("Wrong Page");
+    return;
+  }
+  setTimeout(
+    window.location.reload,
+    60 * 1000,
+  );
 }
 
-console.log("Setting westlaw refresh timeout");
 refreshPageIfNeeded();
