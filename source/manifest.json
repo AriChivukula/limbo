@@ -8,14 +8,17 @@
     "persistent": false
   },
   "page_action": {
-    "default_title": "limbo",
+    "default_title": "limbo"
   },
-  "permissions": ["tabs", "https://*.westlaw.com/*"],
+  "permissions": [
+    "tabs",
+    "https://*.westlaw.com/*"
+  ],
   "web_accessible_resources": ["*"],
   "content_scripts": [
-   {
-    "matches": ["https://*.westlaw.com/*"],
-    "js": ["content.js"]
-   }
- ]
+    {
+      "matches": ["https://*.westlaw.com/*"],
+      "js": ["content.js"]
+    }
+  ]
 }
