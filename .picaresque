@@ -8,6 +8,12 @@
   "AWS_SECRET_ACCESS_KEY": {
     "description": "AWS Secret"
   },
+  "GITHUB_TOKEN": {
+    "description": "GitHub Token"
+  },
+  "GITHUB_USER": {
+    "description": "GitHub User"
+  },
   "TF_VAR_DOMAIN": {
     "description": "Domain"
   },
