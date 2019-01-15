@@ -21,7 +21,7 @@ it(
   async (): Promise<void> => {
     const browser = await puppeteer.launch({ args: [ "--no-sandbox" ] });
     const page = await browser.newPage();
-    await page.goto(`file:${path.join(__dirname, "index.html")}`);
+    await page.goto(`file:${path.join(__dirname, "test.html")}`);
     const script = fs.readFileSync("build/content.js");
     const ctx = await page.mainFrame().executionContext();
     const result = await ctx.evaluateHandle(script.toString());
