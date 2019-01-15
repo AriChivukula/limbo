@@ -1,9 +1,8 @@
 var gulp = require("gulp");
 var babel = require("gulp-babel");
-var rollup = require("rollup-stream");
+var replace = require("gulp-string-replace");
 var source = require("vinyl-source-stream");
 var ts = require("gulp-typescript");
-var uglify = require("rollup-plugin-uglify");
 
 var project = ts.createProject("tsconfig.json");
 
@@ -26,13 +25,9 @@ gulp.task(
 
 gulp.task(
   "build:2",
-  () => rollup({
-    input: "build/index.js",
-    format: "cjs",
-    plugins: [ uglify.uglify() ],
-  })
-    .pipe(source("index.js"))
-    .pipe(gulp.dest("./")),
+  () => gulp.src("source/*.json")
+    .pipe(replace("TRAVIS_BUILD_NUMBER", process.env.TRAVIS_BUILD_NUMBER))
+    .pipe(gulp.dest("build/")),
 );
 
 gulp.task(
