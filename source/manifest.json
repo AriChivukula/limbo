@@ -1,0 +1,21 @@
+{
+  "name": "limbo",
+  "version": "TRAVIS_BUILD_NUMBER",
+  "description": "Limbo Isn't Meant to be Bar Ordained",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_title": "limbo",
+  },
+  "permissions": ["tabs", "https://*.westlaw.com/*"],
+  "web_accessible_resources": ["*"],
+  "content_scripts": [
+   {
+    "matches": ["https://*.westlaw.com/*"],
+    "js": ["content.js"]
+   }
+ ]
+}

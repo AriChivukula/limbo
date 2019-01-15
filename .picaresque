@@ -8,32 +8,14 @@
   "AWS_SECRET_ACCESS_KEY": {
     "description": "AWS Secret"
   },
-  "CC_TEST_REPORTER_ID": {
-    "description": "CC Token"
-  },
   "GITHUB_TOKEN": {
     "description": "GitHub Token"
-  },
-  "GITHUB_USER": {
-    "description": "GitHub User"
   },
   "TF_VAR_DOMAIN": {
     "description": "Domain"
   },
   "TF_VAR_NAME": {
     "description": "Name"
-  },
-  "TF_VAR_SLACK_SIGNING_SECRET": {
-    "description": "Slack signs the requests we send you using this secret. Confirm that each request comes from Slack by verifying its unique signature."
-  },
-  "TF_VAR_SLACK_CLIENT_ID": {
-    "description": "Public ID for slack app."
-  },
-  "TF_VAR_SLACK_CLIENT_SECRET": {
-    "description": "You'll need to send this secret along with your client ID when making your oauth.access request."
-  },
-  "TF_VAR_SLACK_REFRESH_TOKEN": {
-    "description": "Slack Secret"
   },
   "TF_VAR_S3_ID": {
     "description": "AWS ID"

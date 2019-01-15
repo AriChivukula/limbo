@@ -1,38 +1,41 @@
 language: node_js
-node_js:
-- node
+node_js: node
 cache: yarn
+addons:
+  chrome: stable
 install:
 - npm install --global --upgrade yarn
 - yarn install
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
 - wget https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
 - unzip terraform_0.11.10_linux_amd64.zip
 - rm terraform_0.11.10_linux_amd64.zip
 - yarn picaresque
 jobs:
   include:
-  - stage: Build
+  - stage: Extension Test
     if: ( type = push ) AND ( branch != master )
     script:
     - yarn outdated
     - yarn mocha
     - yarn gulp build
-    - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
-  - stage: Deploy
+  - stage: Extension Deploy
     if: ( type = push ) AND ( branch = master )
     script:
     - yarn gulp build
-    - yarn install --production=true --ignore-engines
-    - zip -q -r dynamic.zip node_modules index.js
+    - zip limbo.zip build/*
+    deploy:
+      provider: releases
+      name: $TRAVIS_BUILD_NUMBER
+      api_key: $GITHUB_TOKEN
+      file: limbo.zip
+      skip_cleanup: true
+  - stage: Docassemble Test
+    if: ( type = api ) AND ( branch != master )
+    script:
+    - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
+    - ./terraform plan
+  - stage: Docassemble Deploy
+    if: ( type = api ) AND ( branch = master )
+    script:
     - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
     - ./terraform apply -auto-approve
-  - stage: Actualize
-    if: type = api
-    script:
-    - yarn ts-node source/index.ts
-    - git remote add target "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
-    - git add -A
-    - git commit -m "ACTUALIZE ${TRAVIS_BUILD_NUMBER}"
-    - git push target HEAD:$TRAVIS_BRANCH
