@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "React",
     "lib": [
       "ES5",
       "ES6",
@@ -35,9 +32,8 @@
       "ESNext.AsyncIterable",
       "ESNext.Array"
     ],
-    "module": "CommonJS",
+    "module": "None",
     "moduleResolution": "Node",
-    "noImplicitAny": false,
     "target": "ES3",
     "strict": true
   }
