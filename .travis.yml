@@ -22,7 +22,6 @@ jobs:
     if: ( type = push ) AND ( branch = master )
     script:
     - yarn gulp build
-    - sed -i "s/TRAVIS_BUILD_NUMBER/${TRAVIS_BUILD_NUMBER}/g" build/manifest.json
     - zip limbo.zip build/*
     deploy:
       provider: releases
