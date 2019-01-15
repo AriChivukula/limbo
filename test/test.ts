@@ -33,7 +33,7 @@ it(
     const script = readFileSync("build/content.js");
     const ctx = await page.mainFrame().executionContext();
     const result = await ctx.evaluateHandle(script.toString());
-    chai.expect(result.jsonValue()).to.equal("");
+    chai.expect(result.jsonValue()).to.equal("{}");
     await browser.close();
   },
 );
