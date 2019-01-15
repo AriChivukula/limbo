@@ -18,7 +18,7 @@ export function refreshPageIfNeeded(): void {
     () => {
       window.location.reload();
     },
-    5 * 1000,
+    60 * 60 * 1000,
   );
 }
 
