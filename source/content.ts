@@ -6,7 +6,7 @@ export function shouldRefreshPage(url: string): boolean {
 
 export function refreshPageIfNeeded(): void {
   console.log("Starting Refresh Clock");
-  if (!window) {
+  if (typeof window === "undefined") {
     console.log("Test Exit");
     return;
   }
