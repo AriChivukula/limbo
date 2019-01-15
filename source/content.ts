@@ -15,8 +15,10 @@ export function refreshPageIfNeeded(): void {
     return;
   }
   setTimeout(
-    window.location.reload,
-    60 * 1000,
+    () => {
+      window.location.reload();
+    },
+    5 * 1000,
   );
 }
 
