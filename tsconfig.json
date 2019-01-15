@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "React",
     "lib": [
       "ES5",
       "ES6",
@@ -37,7 +34,6 @@
     ],
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "noImplicitAny": false,
     "target": "ES3",
     "strict": true
   }
