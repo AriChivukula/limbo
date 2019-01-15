@@ -6,12 +6,12 @@ export function shouldRefreshPage(url: string): boolean {
 
 export function refreshPageIfNeeded(): void {
   if (shouldRefreshPage(window.location.href)) {
-    window.location.reload();
+    setTimeout(
+      window.location.reload,
+      60 * 1000,
+    );
   }
 }
 
 console.log("Setting westlaw refresh timeout");
-setTimeout(
-  refreshPageIfNeeded,
-  60 * 1000,
-);
+refreshPageIfNeeded();
