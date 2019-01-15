@@ -16,8 +16,8 @@ jobs:
     if: ( type = push ) AND ( branch != master )
     script:
     - yarn outdated
-    - yarn mocha
     - yarn gulp build
+    - yarn mocha
   - stage: Extension Deploy
     if: ( type = push ) AND ( branch = master )
     script:
