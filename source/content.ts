@@ -4,11 +4,14 @@ export function shouldRefreshPage(url: string): boolean {
   return url.match(/^https:\/\/([a-z0-9]+[.])*westlaw.com\/.*$/) !== null;
 }
 
+export function refreshPageIfNeeded(): void {
+  if (shouldRefreshPage(window.location.href)) {
+    window.location.reload();
+  }
+}
+
+console.log("Setting westlaw refresh timeout");
 setTimeout(
-  () => {
-    if (shouldRefreshPage(window.location.href)) {
-      window.location.reload();
-    }
-  },
-  60 * 60 * 1000,
+  refreshPageIfNeeded,
+  60 * 1000,
 );
