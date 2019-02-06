@@ -22,7 +22,7 @@
     "gulp-typescript": "5.0.0",
     "mocha": "5.2.0",
     "picaresque": "0.0.0",
-    "puppeteer": "1.11.0",
+    "puppeteer": "1.12.1",
     "ts-node": "8.0.2",
     "typescript": "3.3.1",
     "vinyl-source-stream": "2.0.0"
