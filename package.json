@@ -24,7 +24,7 @@
     "picaresque": "0.0.0",
     "puppeteer": "1.12.2",
     "ts-node": "8.0.2",
-    "typescript": "3.3.1",
+    "typescript": "3.3.3",
     "vinyl-source-stream": "2.0.0"
   }
 }
