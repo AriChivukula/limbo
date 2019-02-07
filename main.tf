@@ -293,7 +293,7 @@ resource "aws_ecs_task_definition" "TASK" {
       },
       {
         "name": "MAILDEFAULTSENDER",
-        "value": "'NO REPLY' <no-reply@limbo.chivuku.la>",
+        "value": "'NO REPLY' <no-reply@limbo.chivuku.la>"
       },
       {
         "name": "MAILMAILGUNAPIKEY",
