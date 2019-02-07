@@ -12,6 +12,8 @@ variable "S3_SECRET" {}
 
 variable "S3_REGION" {}
 
+variable "MAILGUN_SECRET" {}
+
 provider "aws" {}
 
 resource "aws_vpc" "VPC" {
@@ -288,6 +290,22 @@ resource "aws_ecs_task_definition" "TASK" {
       {
         "name": "REVISION",
         "value": "${timestamp()}"
+      },
+      {
+        "name": "MAILDEFAULTSENDER",
+        "value": "'NO REPLY' <no-reply@limbo.chivuku.la>",
+      },
+      {
+        "name": "MAILMAILGUNAPIKEY",
+        "value": "${var.MAILGUN_SECRET}"
+      },
+      {
+        "name": "MAILMAILGUNDOMAIN",
+        "value": "limbo.chivuku.la"
+      },
+      {
+        "name": "DEFAULTINTERVIEW",
+        "value": "docassemble.law:data/questions/icop.yml"
       }
     ]
   }
