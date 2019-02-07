@@ -25,5 +25,8 @@
   },
   "TF_VAR_S3_REGION": {
     "description": "AWS Secret"
+  },
+  "TF_VAR_MAILGUN_SECRET": {
+    "description": "Mailgun Secret"
   }
 }
