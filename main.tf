@@ -312,17 +312,17 @@ resource "aws_ecs_task_definition" "TASK" {
 ]
 DEFINITION
 
-  cpu = 1024
+  cpu = 256
   execution_role_arn = "${aws_iam_role.IAM_ECS.arn}"
   family = "${var.NAME}"
-  memory = 2048
+  memory = 512
   network_mode = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 }
 
 resource "aws_ecs_service" "SERVICE" {
   cluster = "${aws_ecs_cluster.CLUSTER.id}"
-  desired_count = 1
+  desired_count = 2
   launch_type = "FARGATE"
   name = "${var.NAME}"
   task_definition = "${aws_ecs_task_definition.TASK.arn}"
