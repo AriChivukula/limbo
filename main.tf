@@ -312,10 +312,10 @@ resource "aws_ecs_task_definition" "TASK" {
 ]
 DEFINITION
 
-  cpu = 512
+  cpu = 1024
   execution_role_arn = "${aws_iam_role.IAM_ECS.arn}"
   family = "${var.NAME}"
-  memory = 1024
+  memory = 2048
   network_mode = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 }
