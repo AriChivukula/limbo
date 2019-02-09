@@ -11,7 +11,7 @@
     "@types/chai": "4.1.7",
     "@types/chrome": "0.0.79",
     "@types/mocha": "5.2.5",
-    "@types/node": "10.12.22",
+    "@types/node": "10.12.24",
     "@types/puppeteer": "1.12.1",
     "chai": "4.2.0",
     "gulp": "4.0.0",
