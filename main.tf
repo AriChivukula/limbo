@@ -2,17 +2,13 @@ terraform {
   backend "s3" {}
 }
 
-variable "NAME" {}
+variable "NAME" {
+  default = "limbo"
+}
 
-variable "DOMAIN" {}
-
-variable "S3_ID" {}
-
-variable "S3_SECRET" {}
-
-variable "S3_REGION" {}
-
-variable "MAILGUN_SECRET" {}
+variable "DOMAIN" {
+  default = "limbo.chivuku.la"
+}
 
 provider "aws" {}
 
@@ -268,44 +264,8 @@ resource "aws_ecs_task_definition" "TASK" {
     },
     "environment": [
       {
-        "name": "S3ENABLE",
-        "value": "true"
-      },
-      {
-        "name": "S3BUCKET",
-        "value": "${var.DOMAIN}"
-      },
-      {
-        "name": "S3ACCESSKEY",
-        "value": "${var.S3_ID}"
-      },
-      {
-        "name": "S3SECRETACCESSKEY",
-        "value": "${var.S3_SECRET}"
-      },
-      {
-        "name": "S3REGION",
-        "value": "${var.S3_REGION}"
-      },
-      {
         "name": "REVISION",
         "value": "${timestamp()}"
-      },
-      {
-        "name": "MAILDEFAULTSENDER",
-        "value": "'NO REPLY' <no-reply@limbo.chivuku.la>"
-      },
-      {
-        "name": "MAILMAILGUNAPIKEY",
-        "value": "${var.MAILGUN_SECRET}"
-      },
-      {
-        "name": "MAILMAILGUNDOMAIN",
-        "value": "limbo.chivuku.la"
-      },
-      {
-        "name": "DEFAULTINTERVIEW",
-        "value": "docassemble.law:data/questions/icop.yml"
       }
     ]
   }
