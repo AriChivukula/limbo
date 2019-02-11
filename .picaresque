@@ -11,22 +11,13 @@
   "GITHUB_TOKEN": {
     "description": "GitHub Token"
   },
-  "TF_VAR_DOMAIN": {
-    "description": "Domain"
+  "SECRET_KEY": {
+    "description": "Secret"
   },
-  "TF_VAR_NAME": {
-    "description": "Name"
+  "MAILGUN_API_KEY": {
+    "description": "Mailgun"
   },
-  "TF_VAR_S3_ID": {
-    "description": "AWS ID"
-  },
-  "TF_VAR_S3_SECRET": {
-    "description": "AWS Region"
-  },
-  "TF_VAR_S3_REGION": {
-    "description": "AWS Secret"
-  },
-  "TF_VAR_MAILGUN_SECRET": {
-    "description": "Mailgun Secret"
+  "SECRET_ACCESS_KEY": {
+    "description": "AWS"
   }
 }
