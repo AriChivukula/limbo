@@ -299,3 +299,10 @@ resource "aws_ecs_service" "SERVICE" {
     container_port   = 80
   }
 }
+
+resource "aws_s3_bucket_object" "OBJECT" {
+  bucket = "${var.NAME}"
+  key = "config.yml"
+  source = "config.yml"
+  etag = "${md5(file("config.yml"))}"
+}
