@@ -29,6 +29,8 @@ jobs:
       api_key: $GITHUB_TOKEN
       file: limbo.zip
       skip_cleanup: true
+      on:
+        tags: true
   - stage: Docassemble Test
     if: ( type = api ) AND ( branch != master )
     script:
