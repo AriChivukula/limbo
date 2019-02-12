@@ -40,7 +40,7 @@ gulp.task(
 
 gulp.task(
   "build:4",
-  () => gulp.src("icon/*.jpg")
+  () => gulp.src("icon/*.png")
     .pipe(gulp.dest("build/")),
 );
 
