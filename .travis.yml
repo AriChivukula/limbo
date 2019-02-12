@@ -39,5 +39,6 @@ jobs:
   - stage: Docassemble Deploy
     if: ( type = api ) AND ( branch = master )
     script:
+    - yarn envsub config.yml config.yml
     - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
     - ./terraform apply -auto-approve
