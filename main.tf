@@ -308,7 +308,7 @@ DEFINITION
 
 resource "aws_ecs_service" "SERVICE" {
   cluster = "${aws_ecs_cluster.CLUSTER.id}"
-  desired_count = 2
+  desired_count = 1
   launch_type = "FARGATE"
   name = "${var.NAME}"
   task_definition = "${aws_ecs_task_definition.TASK.arn}"
