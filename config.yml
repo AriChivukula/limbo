@@ -7,10 +7,5 @@ mail:
   mailgun domain: limbo.chivuku.la
   default sender: '"No Reply" <no-reply@limbo.chivuku.la>'
 default interview: docassemble.law:data/questions/icop.yml
-s3:
-  enable: true
-  access key id: AKIAIXSSFFYQIMGAET4Q
-  secret access key: ${SECRET_ACCESS_KEY}
-  bucket: limbo.chivuku.la
-  region: us-east-1
+allow demo: True
 ec2: true

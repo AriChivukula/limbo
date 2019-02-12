@@ -10,6 +10,9 @@ install:
 - unzip terraform_0.11.11_linux_amd64.zip
 - rm terraform_0.11.11_linux_amd64.zip
 - yarn picaresque
+- export TF_VAR_S3_ID=$AWS_ACCESS_KEY_ID 
+- export TF_VAR_S3_REGION=$AWS_DEFAULT_REGION 
+- export TF_VAR_S3_SECRET=$AWS_SECRET_ACCESS_KEY
 jobs:
   include:
   - stage: Extension Test
@@ -29,6 +32,8 @@ jobs:
       api_key: $GITHUB_TOKEN
       file: limbo.zip
       skip_cleanup: true
+      on:
+        tags: true
   - stage: Docassemble Test
     if: ( type = api ) AND ( branch != master )
     script:
