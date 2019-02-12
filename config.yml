@@ -8,4 +8,9 @@ mail:
   default sender: '"No Reply" <no-reply@limbo.chivuku.la>'
 default interview: docassemble.law:data/questions/icop.yml
 allow demo: True
-ec2: true
+s3:
+  enable: true
+  access key id: AKIAIXSSFFYQIMGAET4Q
+  secret access key: ${SECRET_ACCESS_KEY}
+  bucket: limbo.chivuku.la
+  region: us-east-1
