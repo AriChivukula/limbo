@@ -34,11 +34,11 @@ jobs:
   - stage: Docassemble Test
     if: ( type = api ) AND ( branch != master )
     script:
-    - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
+    - ./terraform init -backend-config="bucket=limbo.chivuku.la" -backend-config="key=master.tfstate"
     - ./terraform plan
   - stage: Docassemble Deploy
     if: ( type = api ) AND ( branch = master )
     script:
     - yarn envsub config.yml config.yml
-    - ./terraform init -backend-config="bucket=${TF_VAR_DOMAIN}" -backend-config="key=master.tfstate"
+    - ./terraform init -backend-config="bucket=limbo.chivuku.la" -backend-config="key=master.tfstate"
     - ./terraform apply -auto-approve
