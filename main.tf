@@ -2,6 +2,12 @@ terraform {
   backend "s3" {}
 }
 
+variable "S3_ID" {}
+
+variable "S3_SECRET" {}
+
+variable "S3_REGION" {}
+
 variable "NAME" {
   default = "limbo"
 }
@@ -266,6 +272,26 @@ resource "aws_ecs_task_definition" "TASK" {
       {
         "name": "REVISION",
         "value": "${timestamp()}"
+      },
+      {
+        "name": "S3ENABLE",
+        "value": "true"
+      },
+      {
+        "name": "S3BUCKET",
+        "value": "limbo.chivuku.la"
+      },
+      {
+        "name": "S3ACCESSKEY",
+        "value": "${var.S3_ID}"
+      },
+      {
+        "name": "S3SECRETACCESSKEY",
+        "value": "${var.S3_SECRET}"
+      },
+      {
+        "name": "S3REGION",
+        "value": "${var.S3_REGION}"
       }
     ]
   }
