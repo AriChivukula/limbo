@@ -301,7 +301,7 @@ resource "aws_ecs_service" "SERVICE" {
 }
 
 resource "aws_s3_bucket_object" "OBJECT" {
-  bucket = "${var.NAME}"
+  bucket = "${var.DOMAIN}"
   key = "config.yml"
   source = "config.yml"
   etag = "${md5(file("config.yml"))}"
