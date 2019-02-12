@@ -39,11 +39,18 @@ gulp.task(
 );
 
 gulp.task(
+  "build:4",
+  () => gulp.src("icon/*.jpg")
+    .pipe(gulp.dest("build/")),
+);
+
+gulp.task(
   "build",
   gulp.series(
     "build:0",
     "build:1",
     "build:2",
     "build:3",
+    "build:4",
   ),
 );
