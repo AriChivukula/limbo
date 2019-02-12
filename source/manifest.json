@@ -10,10 +10,10 @@
   "page_action": {
     "default_title": "limbo",
     "default_icon": {
-      "16": "icon/16.jpg",
-      "32": "icon/32.jpg",
-      "48": "icon/48.jpg",
-      "128": "icon/128.jpg"
+      "16": "16.jpg",
+      "32": "32.jpg",
+      "48": "48.jpg",
+      "128": "128.jpg"
     }
   },
   "permissions": [
@@ -28,8 +28,8 @@
     }
   ],
   "icons": {
-    "16": "icon/16.jpg",
-    "48": "icon/48.jpg",
-    "128": "icon/128.jpg"
+    "16": "16.jpg",
+    "48": "48.jpg",
+    "128": "128.jpg"
   }
 }
