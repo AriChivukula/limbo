@@ -6,11 +6,11 @@
     "@babel/polyfill": "7.2.5"
   },
   "devDependencies": {
-    "@babel/core": "7.2.2",
+    "@babel/core": "7.3.3",
     "@babel/preset-env": "7.3.1",
     "@types/chai": "4.1.7",
-    "@types/chrome": "0.0.79",
-    "@types/mocha": "5.2.5",
+    "@types/chrome": "0.0.81",
+    "@types/mocha": "5.2.6",
     "@types/node": "11.9.4",
     "@types/puppeteer": "1.12.1",
     "chai": "4.2.0",
@@ -21,7 +21,7 @@
     "gulp-cli": "2.0.1",
     "gulp-string-replace": "1.1.2",
     "gulp-typescript": "5.0.0",
-    "mocha": "5.2.0",
+    "mocha": "6.0.0",
     "picaresque": "0.0.0",
     "puppeteer": "1.12.2",
     "ts-node": "8.0.2",
