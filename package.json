@@ -2,6 +2,12 @@
   "name": "limbo",
   "version": "0.0.0",
   "private": true,
+  "mocha": {
+    "bail": true,
+    "full-trace": true,
+    "require": ["ts-node/register", "source-map-support/register"],
+    "spec": ["src/test/*.ts"]
+  },
   "dependencies": {
     "@babel/polyfill": "7.2.5"
   },
