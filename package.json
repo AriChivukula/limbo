@@ -6,7 +6,7 @@
     "bail": true,
     "full-trace": true,
     "require": ["ts-node/register"],
-    "spec": ["src/test/*.ts"]
+    "spec": ["test/*.ts"]
   },
   "dependencies": {
     "@babel/polyfill": "7.2.5"
