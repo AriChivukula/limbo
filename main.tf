@@ -18,109 +18,31 @@ variable "DOMAIN" {
 
 provider "aws" {}
 
-resource "aws_vpc" "VPC" {
-  cidr_block = "192.168.0.0/16"
-  enable_dns_hostnames = true
-  enable_dns_support = true
-
+data "aws_vpc" "VPC" {
   tags {
-    Name = "${var.NAME}"
+    Name = "aol"
   }
 }
 
-data "aws_availability_zones" "AZS" {}
-
-resource "aws_subnet" "PUBLIC_SUBNETS" {
-  count = "${length(data.aws_availability_zones.AZS.names)}"
-  cidr_block = "${cidrsubnet(aws_vpc.VPC.cidr_block, 8, count.index)}"
-  vpc_id = "${aws_vpc.VPC.id}"
-  availability_zone = "${data.aws_availability_zones.AZS.names[count.index]}"
-  map_public_ip_on_launch = true
-
+data "aws_subnet_ids" "PUBLIC_SUBNETS" {
+  vpc_id = "${data.aws_vpc.VPC.id}"
   tags {
-    Name = "${var.NAME}"
+    Name = "aol"
     Type = "Public"
   }
 }
 
-resource "aws_internet_gateway" "INTERNET_GATEWAY" {
-  vpc_id = "${aws_vpc.VPC.id}"
-
+data "aws_subnet_ids" "PRIVATE_SUBNETS" {
+  vpc_id = "${data.aws_vpc.VPC.id}"
   tags {
-    Name = "${var.NAME}"
-  }
-}
-
-resource "aws_route_table" "PUBLIC_TABLE" {
-  vpc_id = "${aws_vpc.VPC.id}"
-
-  tags {
-    Name = "${var.NAME}"
-    Type = "Public"
-  }
-}
-
-resource "aws_route" "PUBLIC_ROUTE" {
-  route_table_id = "${aws_route_table.PUBLIC_TABLE.id}"
-  gateway_id = "${aws_internet_gateway.INTERNET_GATEWAY.id}"
-  destination_cidr_block = "0.0.0.0/0"
-}
-
-resource "aws_route_table_association" "PUBLIC_ASSOC" {
-  count = "${length(data.aws_availability_zones.AZS.names)}"
-  subnet_id = "${element(aws_subnet.PUBLIC_SUBNETS.*.id, count.index)}"
-  route_table_id = "${aws_route_table.PUBLIC_TABLE.id}"
-}
-
-resource "aws_eip" "IP" {
-  vpc = true
-}
-
-resource "aws_nat_gateway" "NAT" {
-  allocation_id = "${aws_eip.IP.id}"
-  subnet_id = "${aws_subnet.PUBLIC_SUBNETS.0.id}"
-  
-  tags {
-    Name = "${var.NAME}"
-  }
-}
-
-resource "aws_subnet" "PRIVATE_SUBNETS" {
-  count = "${length(data.aws_availability_zones.AZS.names)}"
-  cidr_block = "${cidrsubnet(aws_vpc.VPC.cidr_block, 8, count.index + length(data.aws_availability_zones.AZS.names))}"
-  vpc_id = "${aws_vpc.VPC.id}"
-  availability_zone = "${data.aws_availability_zones.AZS.names[count.index]}"
-
-  tags {
-    Name = "${var.NAME}"
+    Name = "aol"
     Type = "Private"
   }
-}
-
-resource "aws_route_table" "PRIVATE_TABLE" {
-  vpc_id = "${aws_vpc.VPC.id}"
-
-  tags {
-    Name = "${var.NAME}"
-    Type = "Private"
-  }
-}
-
-resource "aws_route" "PRIVATE_ROUTE" {
-  route_table_id  = "${aws_route_table.PRIVATE_TABLE.id}"
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = "${aws_nat_gateway.NAT.id}"
-}
-
-resource "aws_route_table_association" "PRIVATE_ASSOC" {
-  count = "${length(data.aws_availability_zones.AZS.names)}"
-  subnet_id = "${element(aws_subnet.PRIVATE_SUBNETS.*.id, count.index)}"
-  route_table_id = "${aws_route_table.PRIVATE_TABLE.id}"
 }
 
 resource "aws_security_group" "SECURITY" {
   name = "${var.NAME}"
-  vpc_id = "${aws_vpc.VPC.id}"
+  vpc_id = "${data.aws_vpc.VPC.id}"
 
   ingress {
     from_port = 0
@@ -193,7 +115,7 @@ resource "aws_iam_role_policy_attachment" "IAM_ROLE_ECS" {
 
 resource "aws_lb" "LB" {
   name = "${var.NAME}"
-  subnets = ["${aws_subnet.PUBLIC_SUBNETS.*.id}"]
+  subnets = ["${data.aws_subnet_ids.PUBLIC_SUBNETS.ids}"]
   security_groups = ["${aws_security_group.SECURITY.id}"]
   
   tags {
@@ -205,7 +127,7 @@ resource "aws_lb_target_group" "LB_TARGET" {
   name = "${var.NAME}"
   port = 80
   protocol = "HTTP"
-  vpc_id = "${aws_vpc.VPC.id}"
+  vpc_id = "${data.aws_vpc.VPC.id}"
   target_type = "ip"
   
   health_check = {
@@ -331,7 +253,7 @@ resource "aws_ecs_service" "SERVICE" {
   health_check_grace_period_seconds  = 600
 
   network_configuration {
-    subnets = ["${aws_subnet.PRIVATE_SUBNETS.*.id}"]
+    subnets = ["${data.aws_subnet_ids.PUBLIC_SUBNETS.ids}"]
     security_groups = ["${aws_security_group.SECURITY.id}"]
   }
 
