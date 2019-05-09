@@ -130,7 +130,7 @@ resource "aws_lb_target_group" "LB_TARGET" {
   vpc_id = "${data.aws_vpc.VPC.id}"
   target_type = "ip"
   
-  health_check = {
+  health_check {
     path = "/"
     matcher = "200-399"
   }
