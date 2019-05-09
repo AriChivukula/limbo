@@ -19,14 +19,14 @@ variable "DOMAIN" {
 provider "aws" {}
 
 data "aws_vpc" "VPC" {
-  tags {
+  tags = {
     Name = "aol"
   }
 }
 
 data "aws_subnet_ids" "PUBLIC_SUBNETS" {
   vpc_id = "${data.aws_vpc.VPC.id}"
-  tags {
+  tags = {
     Name = "aol"
     Type = "Public"
   }
@@ -34,7 +34,7 @@ data "aws_subnet_ids" "PUBLIC_SUBNETS" {
 
 data "aws_subnet_ids" "PRIVATE_SUBNETS" {
   vpc_id = "${data.aws_vpc.VPC.id}"
-  tags {
+  tags = {
     Name = "aol"
     Type = "Private"
   }
@@ -64,7 +64,7 @@ resource "aws_acm_certificate" "CERTIFICATE" {
   subject_alternative_names = ["*.${var.DOMAIN}"]
   validation_method = "DNS"
 
-  tags {
+  tags = {
     Name = "${var.NAME}"
   }
 }
@@ -72,7 +72,7 @@ resource "aws_acm_certificate" "CERTIFICATE" {
 resource "aws_route53_zone" "ZONE" {
   name = "${var.DOMAIN}."
 
-  tags {
+  tags = {
     Name = "${var.NAME}"
   }
 }
@@ -118,7 +118,7 @@ resource "aws_lb" "LB" {
   subnets = ["${data.aws_subnet_ids.PUBLIC_SUBNETS.ids}"]
   security_groups = ["${aws_security_group.SECURITY.id}"]
   
-  tags {
+  tags = {
     Name = "${var.NAME}"
   }
 }
@@ -135,7 +135,7 @@ resource "aws_lb_target_group" "LB_TARGET" {
     matcher = "200-399"
   }
   
-  tags {
+  tags = {
     Name = "${var.NAME}"
   }
 }
