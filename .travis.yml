@@ -21,6 +21,8 @@ jobs:
     - yarn outdated
     - yarn gulp build
     - yarn mocha
+    - ./terraform init -backend-config="bucket=limbo.chivuku.la" -backend-config="key=master.tfstate"
+    - ./terraform plan
   - stage: Extension Deploy
     if: ( type = push ) AND ( branch = master )
     script:
@@ -34,11 +36,6 @@ jobs:
       skip_cleanup: true
       on:
         tags: true
-  - stage: Docassemble Test
-    if: ( type = api ) AND ( branch != master )
-    script:
-    - ./terraform init -backend-config="bucket=limbo.chivuku.la" -backend-config="key=master.tfstate"
-    - ./terraform plan
   - stage: Docassemble Deploy
     if: ( type = api ) AND ( branch = master )
     script:
