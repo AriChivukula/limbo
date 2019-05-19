@@ -2,7 +2,7 @@ import "@babel/polyfill";
 
 import {
   shouldRefreshPage
-} from "./content";
+} from "./content_westlaw";
 
 chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
   if (shouldRefreshPage(tab.url || "")) {
