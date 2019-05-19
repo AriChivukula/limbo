@@ -3,8 +3,12 @@ import {
   sitation,
 } from "sitation";
 
-export function findAndPrintCitations(): string {
-  return sitation("");
+export function findCitations(): string {
+  return parseCitations("");
 }
 
-console.log(findAndPrintCitations());
+export function parseCitations(content: string): string {
+  return sitation(content);
+}
+
+console.log(findCitations());
