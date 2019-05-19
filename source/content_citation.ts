@@ -3,9 +3,8 @@ import {
   sitation,
 } from "sitation";
 
-export function findAndPrintCitations(): void {
-  console.log("Looking for Citations");
-  console.log(sitation(""));
+export function findAndPrintCitations(): string {
+  return sitation("");
 }
 
-findAndPrintCitations();
+console.log(findAndPrintCitations());
