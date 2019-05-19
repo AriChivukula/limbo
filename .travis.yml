@@ -3,6 +3,9 @@ node_js: node
 cache: yarn
 addons:
   chrome: stable
+branches:
+  except:
+  - /^untagged/
 install:
 - npm install --global --upgrade yarn
 - yarn install
