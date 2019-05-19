@@ -15,11 +15,11 @@ import {
   shouldRefreshPage,
 } from "../source/content_westlaw";
 import {
-  findAndPrintCitations,
+  parseCitations,
 } from "../source/content_citation";
 
 describe(
-  "shouldRefreshPage",
+  "content_westlaw",
   async (): Promise<void> => {
     it(
       "node",
@@ -46,12 +46,12 @@ describe(
 );
 
 describe(
-  "findAndPrintCitations",
+  "content_citation",
   async (): Promise<void> => {
     it(
       "node",
       async (): Promise<void> => {
-        chai.expect(findAndPrintCitations("")).to.equal("");
+        chai.expect(parseCitations("")).to.equal("");
       },
     );
     it(
