@@ -16,7 +16,7 @@ import {
 } from "../source/content_westlaw";
 import {
   findAndPrintCitations,
-} from "../source/content_citations";
+} from "../source/content_citation";
 
 describe(
   "shouldRefreshPage",
