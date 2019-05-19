@@ -30,7 +30,7 @@ it(
     const browser = await launch({ args: [ "--no-sandbox" ] });
     const page = await browser.newPage();
     await page.goto(`file:${join(__dirname, "test.html")}`);
-    const script = readFileSync("build/content.js");
+    const script = readFileSync("build/content_westlaw.js");
     const ctx = await page.mainFrame().executionContext();
     const result = await ctx.evaluateHandle(script.toString());
     chai.expect(JSON.stringify(result.jsonValue())).to.equal("{}");
