@@ -13,7 +13,7 @@ import {
 
 import {
   shouldRefreshPage,
-} from "../source/content";
+} from "../source/content_westlaw";
 
 it(
   "shouldRefreshPage",
