@@ -28,7 +28,7 @@
     },
     {
       "matches": ["https://*/*", "http://*/*"],
-      "js": ["content_sitation.js"]
+      "js": ["content_citation.js"]
     }
   ],
   "icons": {
