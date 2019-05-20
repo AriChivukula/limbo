@@ -4,7 +4,7 @@ import {
 } from "sitation";
 
 export function findCitations(): string {
-  return parseCitations("");
+  return parseCitations(document.body.innerText);
 }
 
 export function parseCitations(content: string): string {
