@@ -63,7 +63,7 @@ describe(
         const script = readFileSync("build/content_citation.js");
         const ctx = await page.mainFrame().executionContext();
         const result = await ctx.evaluateHandle(script.toString());
-        chai.expect(JSON.stringify(result.jsonValue())).to.equal("");
+        chai.expect(JSON.stringify(result.jsonValue())).to.equal("{}");
         await browser.close();
       },
     );
