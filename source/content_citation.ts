@@ -4,6 +4,7 @@ import {
 } from "sitation";
 
 export function findCitations(): string {
+  // @ts-ignore
   return parseCitations(document.body.innerText);
 }
 
