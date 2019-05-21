@@ -3,6 +3,9 @@ node_js: node
 cache: yarn
 addons:
   chrome: stable
+branches:
+  except:
+  - /^untagged/
 install:
 - npm install --global --upgrade yarn
 - yarn install
@@ -23,7 +26,7 @@ jobs:
     - ./terraform init -backend-config="bucket=limbo.chivuku.la" -backend-config="key=master.tfstate"
     - ./terraform plan
   - stage: Extension Deploy
-    if: ( type = push ) AND ( branch = master )
+    if: type = push
     script:
     - yarn gulp build
     - zip limbo.zip build/*
@@ -34,7 +37,7 @@ jobs:
       file: limbo.zip
       skip_cleanup: true
       on:
-        tags: true
+        all_branches: true
   - stage: Docassemble Deploy
     if: ( type = api ) AND ( branch = master )
     script:

@@ -24,7 +24,11 @@
   "content_scripts": [
     {
       "matches": ["https://*.westlaw.com/*"],
-      "js": ["content.js"]
+      "js": ["content_westlaw.js"]
+    },
+    {
+      "matches": ["https://*/*", "http://*/*"],
+      "js": ["content_citation.js"]
     }
   ],
   "icons": {
