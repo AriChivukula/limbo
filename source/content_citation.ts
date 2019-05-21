@@ -6,8 +6,8 @@ import {
 export function parseCitations(content: string): string[] {
   const citationArray: string[] = [];
   const citations = sitation(content);
-  for (const citation of citations.explode("\n")) {
-    const parts = citation.explode(",");
+  for (const citation of citations.split("\n")) {
+    const parts = citation.split(",");
     if (parts.length < 7) {
       continue;
     }
