@@ -51,7 +51,7 @@ describe(
     it(
       "node",
       async (): Promise<void> => {
-        chai.expect(parseCitations("")).to.equal([]);
+        chai.expect(parseCitations("")).to.deep.equal([]);
       },
     );
     it(
