@@ -23,6 +23,6 @@ if (typeof document !== 'undefined') {
   console.log(citations);
   for (const citation of citations) {
     // @ts-ignore
-    document.body.innerHTML.replace(new RegExp(citation[0], "ig"), "<a href=\"" + citation[1] + "\">" + citation[0] + "</a>");
+    document.body.innerHTML = document.body.innerHTML.replace(new RegExp(citation[0], "ig"), "<a href=\"" + citation[1] + "\">" + citation[0] + "</a>");
   }
 }
