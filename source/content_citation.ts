@@ -11,7 +11,6 @@ export function parseCitations(content: string): [string, string][] {
     if (parts.length < 7) {
       continue;
     }
-    thePage.html(thePage.html().replace(/jQuery/ig, '<a href="http://jquery.com">jQuery</a>'));
     citationArray.push([parts[2] + " " + parts[3] + " " + parts[4], "https://www.courtlistener.com/c/" + parts[3] + "/" + parts[2] + "/" + parts[4] + "/"]);
   }
   return citationArray;
