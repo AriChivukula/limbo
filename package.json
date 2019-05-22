@@ -13,8 +13,8 @@
     "sitation": "0.0.9"
   },
   "devDependencies": {
-    "@babel/core": "7.4.4",
-    "@babel/preset-env": "7.4.4",
+    "@babel/core": "7.4.5",
+    "@babel/preset-env": "7.4.5",
     "@types/chai": "4.1.7",
     "@types/chrome": "0.0.86",
     "@types/mocha": "5.2.6",
@@ -29,7 +29,6 @@
     "gulp-string-replace": "1.1.2",
     "gulp-typescript": "5.0.1",
     "mocha": "6.1.4",
-    "picaresque": "0.0.0",
     "puppeteer": "1.16.0",
     "ts-node": "8.1.0",
     "typescript": "3.4.5",
