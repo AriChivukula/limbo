@@ -9,9 +9,9 @@ branches:
 install:
 - npm install --global --upgrade yarn
 - yarn install
-- wget https://releases.hashicorp.com/terraform/0.12.0-rc1/terraform_0.12.0-rc1_linux_amd64.zip
-- unzip terraform_0.12.0-rc1_linux_amd64.zip
-- rm terraform_0.12.0-rc1_linux_amd64.zip
+- wget https://releases.hashicorp.com/terraform/0.12.0/terraform_0.12.0_linux_amd64.zip
+- unzip terraform_0.12.0_linux_amd64.zip
+- rm terraform_0.12.0_linux_amd64.zip
 - export TF_VAR_S3_ID=$AWS_ACCESS_KEY_ID 
 - export TF_VAR_S3_REGION=$AWS_DEFAULT_REGION 
 - export TF_VAR_S3_SECRET=$AWS_SECRET_ACCESS_KEY
@@ -20,7 +20,6 @@ jobs:
   - stage: Extension Test
     if: ( type = push ) AND ( branch != master )
     script:
-    - yarn outdated
     - yarn gulp build
     - yarn mocha
     - ./terraform init -backend-config="bucket=limbo.chivuku.la" -backend-config="key=master.tfstate"
