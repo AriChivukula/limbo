@@ -28,7 +28,7 @@ jobs:
     if: type = push
     script:
     - yarn gulp build
-    - zip limbo.zip build/*
+    - zip limbo.zip -j build/*
     deploy:
       provider: releases
       name: $TRAVIS_BUILD_NUMBER
