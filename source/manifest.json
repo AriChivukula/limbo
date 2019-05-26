@@ -25,10 +25,6 @@
     {
       "matches": ["https://*.westlaw.com/*"],
       "js": ["content_westlaw.js"]
-    },
-    {
-      "matches": ["https://*/*", "http://*/*"],
-      "js": ["content_citation.js"]
     }
   ],
   "icons": {
