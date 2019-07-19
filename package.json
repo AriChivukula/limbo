@@ -28,7 +28,7 @@
     "gulp-cli": "2.2.0",
     "gulp-string-replace": "1.1.2",
     "gulp-typescript": "5.0.1",
-    "mocha": "6.1.4",
+    "mocha": "6.2.0",
     "puppeteer": "1.18.1",
     "ts-node": "8.3.0",
     "typescript": "3.5.3",
