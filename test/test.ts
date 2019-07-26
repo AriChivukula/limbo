@@ -37,7 +37,8 @@ describe(
         await page.goto(`file:${join(__dirname, "test.html")}`);
         const script = readFileSync("build/content_westlaw.js");
         const ctx = await page.mainFrame().executionContext();
-        const result = await ctx.evaluateHandle(script.toString()); // @ts-ignore
+        // @ts-ignore
+        const result = await ctx.evaluateHandle(script.toString());
         chai.expect(JSON.stringify(result.jsonValue())).to.equal("{}");
         await browser.close();
       },
@@ -62,8 +63,10 @@ describe(
         await page.goto(`file:${join(__dirname, "test.html")}`);
         const script = readFileSync("build/content_citation.js");
         const ctx = await page.mainFrame().executionContext();
-        await ctx.evaluateHandle(script.toString()); // @ts-ignore
-        const result = await ctx.evaluateHandle("document.body.innerHTML"); // @ts-ignore
+        // @ts-ignore
+        await ctx.evaluateHandle(script.toString());
+        // @ts-ignore
+        const result = await ctx.evaluateHandle("document.body.innerHTML");
         chai.expect(JSON.stringify(result.jsonValue())).to.equal("{}");
         await browser.close();
       },
