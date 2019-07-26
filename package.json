@@ -19,7 +19,7 @@
     "@types/chrome": "0.0.86",
     "@types/mocha": "5.2.7",
     "@types/node": "12.6.8",
-    "@types/puppeteer": "1.12.4",
+    "@types/puppeteer": "1.19.0",
     "chai": "4.2.0",
     "envsub": "3.0.9",
     "gulp": "4.0.2",
