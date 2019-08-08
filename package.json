@@ -18,7 +18,7 @@
     "@types/chai": "4.1.7",
     "@types/chrome": "0.0.88",
     "@types/mocha": "5.2.7",
-    "@types/node": "12.7.0",
+    "@types/node": "12.7.1",
     "@types/puppeteer": "1.12.4",
     "chai": "4.2.0",
     "envsub": "3.0.9",
