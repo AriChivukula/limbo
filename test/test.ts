@@ -29,6 +29,7 @@ describe(
         chai.expect(shouldRefreshPage("https://worstlaw.com/")).to.be.false;
       },
     );
+    /*
     it(
       "chrome",
       async (): Promise<void> => {
@@ -43,6 +44,7 @@ describe(
         await browser.close();
       },
     );
+    */
   },
 );
 
@@ -55,6 +57,7 @@ describe(
         chai.expect(parseCitations("")).to.deep.equal([]);
       },
     );
+    /*
     it(
       "chrome",
       async (): Promise<void> => {
@@ -71,5 +74,6 @@ describe(
         await browser.close();
       },
     );
+    */
   },
 );
