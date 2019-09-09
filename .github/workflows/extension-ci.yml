@@ -13,3 +13,8 @@ jobs:
         yarn install
         yarn gulp build
         yarn mocha
+        zip limbo.zip -j build/*
+    - uses: actions/upload-artifact@master
+      with:
+        name: extension
+        path: limbo.zip
