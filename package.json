@@ -14,11 +14,11 @@
   },
   "devDependencies": {
     "@babel/core": "7.6.0",
-    "@babel/preset-env": "7.5.5",
+    "@babel/preset-env": "7.6.0",
     "@types/chai": "4.2.2",
     "@types/chrome": "0.0.88",
     "@types/mocha": "5.2.7",
-    "@types/node": "12.7.3",
+    "@types/node": "12.7.4",
     "@types/puppeteer": "1.19.1",
     "chai": "4.2.0",
     "envsub": "3.0.9",
