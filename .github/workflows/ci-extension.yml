@@ -1,0 +1,13 @@
+on: [pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@master
+    - name: Test Build
+      run: |
+        npm install --global --upgrade yarn
+        yarn install
+        yarn gulp build
+        yarn mocha
