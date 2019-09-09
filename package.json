@@ -9,7 +9,7 @@
     "spec": ["test/*.ts"]
   },
   "dependencies": {
-    "@babel/polyfill": "7.4.4",
+    "@babel/polyfill": "7.6.0",
     "sitation": "0.0.9"
   },
   "devDependencies": {
