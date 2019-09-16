@@ -18,7 +18,7 @@
     "@types/chai": "4.2.2",
     "@types/chrome": "0.0.88",
     "@types/mocha": "5.2.7",
-    "@types/node": "12.7.4",
+    "@types/node": "12.7.5",
     "@types/puppeteer": "1.19.1",
     "chai": "4.2.0",
     "envsub": "3.0.9",
@@ -30,8 +30,8 @@
     "gulp-typescript": "5.0.1",
     "mocha": "6.2.0",
     "puppeteer": "1.20.0",
-    "ts-node": "8.3.0",
-    "typescript": "3.6.2",
+    "ts-node": "8.4.1",
+    "typescript": "3.6.3",
     "vinyl-source-stream": "2.0.0"
   }
 }
