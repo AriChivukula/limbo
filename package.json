@@ -16,7 +16,7 @@
     "@babel/core": "7.9.0",
     "@babel/preset-env": "7.9.0",
     "@types/chai": "4.2.11",
-    "@types/chrome": "0.0.102",
+    "@types/chrome": "0.0.103",
     "@types/mocha": "7.0.2",
     "@types/node": "13.9.4",
     "@types/puppeteer": "2.0.1",
