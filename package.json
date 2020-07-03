@@ -31,7 +31,7 @@
     "mocha": "8.0.1",
     "puppeteer": "4.0.1",
     "ts-node": "8.10.2",
-    "typescript": "3.9.5",
+    "typescript": "3.9.6",
     "vinyl-source-stream": "2.0.0"
   }
 }
