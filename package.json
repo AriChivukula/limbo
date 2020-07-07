@@ -9,17 +9,17 @@
     "spec": ["test/*.ts"]
   },
   "dependencies": {
-    "@babel/polyfill": "7.10.1",
+    "@babel/polyfill": "7.10.4",
     "sitation": "0.0.9"
   },
   "devDependencies": {
-    "@babel/core": "7.10.3",
+    "@babel/core": "7.10.4",
     "@babel/preset-env": "7.10.4",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.117",
     "@types/mocha": "7.0.2",
     "@types/node": "14.0.14",
-    "@types/puppeteer": "3.0.0",
+    "@types/puppeteer": "3.0.1",
     "chai": "4.2.0",
     "envsub": "4.0.7",
     "gulp": "4.0.2",
@@ -29,9 +29,9 @@
     "gulp-string-replace": "1.1.2",
     "gulp-typescript": "5.0.1",
     "mocha": "8.0.1",
-    "puppeteer": "4.0.1",
+    "puppeteer": "5.0.0",
     "ts-node": "8.10.2",
-    "typescript": "3.9.5",
+    "typescript": "3.9.6",
     "vinyl-source-stream": "2.0.0"
   }
 }
