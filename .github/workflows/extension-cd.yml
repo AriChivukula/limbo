@@ -10,7 +10,7 @@ jobs:
     - uses: actions/setup-node@master
     - name: Build
       run: |
-        npm install --global --upgrade yarn
+        npm install --upgrade yarn
         yarn install
         yarn gulp build
         zip limbo.zip -j build/*
