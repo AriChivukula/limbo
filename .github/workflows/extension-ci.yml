@@ -7,7 +7,7 @@ jobs:
     - uses: actions/setup-node@master
     - name: Test Build
       run: |
-        npm install --global --upgrade yarn
+        npm install --upgrade yarn
         yarn install
         yarn gulp build
         yarn mocha
