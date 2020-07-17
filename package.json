@@ -29,7 +29,7 @@
     "gulp-string-replace": "1.1.2",
     "gulp-typescript": "5.0.1",
     "mocha": "8.0.1",
-    "puppeteer": "5.0.0",
+    "puppeteer": "5.1.0",
     "ts-node": "8.10.2",
     "typescript": "3.9.6",
     "vinyl-source-stream": "2.0.0"
