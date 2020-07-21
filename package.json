@@ -13,12 +13,12 @@
     "sitation": "0.0.9"
   },
   "devDependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.10.5",
     "@babel/preset-env": "7.10.4",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.121",
     "@types/mocha": "8.0.0",
-    "@types/node": "14.0.20",
+    "@types/node": "14.0.24",
     "@types/puppeteer": "3.0.1",
     "chai": "4.2.0",
     "envsub": "4.0.7",
@@ -29,7 +29,7 @@
     "gulp-string-replace": "1.1.2",
     "gulp-typescript": "5.0.1",
     "mocha": "8.0.1",
-    "puppeteer": "5.0.0",
+    "puppeteer": "5.2.1",
     "ts-node": "8.10.2",
     "typescript": "3.9.7",
     "vinyl-source-stream": "2.0.0"
