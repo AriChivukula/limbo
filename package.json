@@ -13,11 +13,11 @@
     "sitation": "0.0.9"
   },
   "devDependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.10.5",
     "@babel/preset-env": "7.10.4",
     "@types/chai": "4.2.11",
     "@types/chrome": "0.0.120",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "8.0.0",
     "@types/node": "14.0.20",
     "@types/puppeteer": "3.0.1",
     "chai": "4.2.0",
@@ -31,7 +31,7 @@
     "mocha": "8.0.1",
     "puppeteer": "5.0.0",
     "ts-node": "8.10.2",
-    "typescript": "3.9.6",
+    "typescript": "3.9.7",
     "vinyl-source-stream": "2.0.0"
   }
 }
