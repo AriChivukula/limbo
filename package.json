@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.11.4",
-    "@babel/preset-env": "7.11.0",
+    "@babel/preset-env": "7.11.5",
     "@types/chai": "4.2.12",
     "@types/chrome": "0.0.121122",
     "@types/mocha": "8.0.3",
