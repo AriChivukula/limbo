@@ -13,7 +13,7 @@
     "sitation": "0.0.9"
   },
   "devDependencies": {
-    "@babel/core": "7.12.1",
+    "@babel/core": "7.12.3",
     "@babel/preset-env": "7.12.1",
     "@types/chai": "4.2.13",
     "@types/chrome": "0.0.121122",
