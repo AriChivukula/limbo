@@ -13,14 +13,14 @@
     "sitation": "0.0.9"
   },
   "devDependencies": {
-    "@babel/core": "7.12.10",
+    "@babel/core": "7.12.13",
     "@babel/preset-env": "7.12.13",
     "@types/chai": "4.2.14",
     "@types/chrome": "0.0.121122",
     "@types/mocha": "8.2.0",
-    "@types/node": "14.14.22",
+    "@types/node": "14.14.25",
     "@types/puppeteer": "5.4.3",
-    "chai": "4.2.0",
+    "chai": "4.3.0",
     "envsub": "4.0.7",
     "gulp": "4.0.2",
     "gulp-babel": "8.0.0",
